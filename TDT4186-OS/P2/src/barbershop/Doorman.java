@@ -30,6 +30,8 @@ public class Doorman extends Thread {
 		int sec = 4 - r.nextInt(4);
 		while(customerOfToday > 0){
 			synchronized (this) {
+				
+			
 				try {
 					wait(sec*Globals.doormanSleep/4);
 					Customer c = new Customer();
@@ -40,21 +42,23 @@ public class Doorman extends Thread {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}notifyAll();
-				
-				
-				
-			}
+				}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+				
+				
+				
+			
+		}
 	}
+		
+		
+		
+		
+		
+		
+		
+		
+	
 
 	// Add more methods as needed
 }

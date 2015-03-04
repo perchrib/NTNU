@@ -52,7 +52,7 @@ public class Barber extends Thread {
 							gui.fillBarberChair(barberID, c);
 							gui.println("Barber#" + barberID + " has customer#" + c.getCustomerID());
 							wait(sec*Globals.barberWork/2);
-							//isReady = false;
+							isReady = false;
 							gui.emptyBarberChair(barberID);
 							Globals.customerOfBarber--;
 							gui.println("Customer left: " + Globals.customerOfBarber);
