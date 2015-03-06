@@ -9,7 +9,8 @@ def distance(p1,p2):
 	return round(math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2),2)
 
 
-eps = 3.0#math.sqrt(10)
+eps = math.sqrt(10)
+
 minPts = 3.0
 
 points = []
@@ -91,6 +92,10 @@ def main():
 	plt.plot(x1,y1,'ro',label='Core Point')
 	plt.plot(x2,y2,'bo',label='Noise Point') #,x2,y2,'bo',x3,y3,'yo')
 	plt.plot(x3,y3,'yo',label='Border Point')
+	if eps != 3:
+		plt.text(8.5,-2 , "EPS = "+  r"$\sqrt{10}$")
+	else:
+		plt.text(8.5,-2 , "EPS = " + str(eps))
 	plt.legend()
 	plt.axis([0,20,0,20])
 	plt.title('DB SCAN')
