@@ -118,6 +118,9 @@ public class Process implements Constants
 		statistics.totalTimeSpentWaitingForMemory += timeSpentWaitingForMemory;
 		statistics.nofCompletedProcesses++;
 	}
-
+	
+	
+	
+	
 	// Add more methods as needed
 }

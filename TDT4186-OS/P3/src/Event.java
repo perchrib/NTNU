@@ -17,8 +17,9 @@ public class Event implements Comparable
 	 * @param time	The time at which the event will occur.
 	 */
 	public Event(int type, long time) {
-		this.type = type;
-		this.time = time;
+		this.type = type; //id crement +=1 
+		this.time = time; // start time = 0
+		//System.out.println("EVENT: " + type);
 	}
 
 	/**

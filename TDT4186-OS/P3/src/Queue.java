@@ -33,7 +33,7 @@ public class Queue extends JPanel implements Constants {
 		this.name = name;
 		this.maxVisibleLength = maxVisibleLength;
 		this.direction = direction;
-		content = new ArrayList();
+		content = new ArrayList(); //LinkedList
 		setBackground(Color.white);
 	}
 

@@ -127,6 +127,7 @@ public class SimulationGui extends JFrame implements Constants, ActionListener, 
 			// we can't "hijack" the GUI's event handling thread.
 			Thread t = new Thread(this);
 			t.start();
+			
 		}
 		else {
 			sleep = false;

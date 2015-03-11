@@ -70,7 +70,9 @@ public class Simulator implements Constants
 			memory.timePassed(timeDifference);
 			gui.timePassed(timeDifference);
 			// Deal with the event
+			
 			if (clock < simulationLength) {
+				System.out.println(event.getType());
 				processEvent(event);
 			}
 
@@ -115,6 +117,7 @@ public class Simulator implements Constants
 		// Create a new process
 		Process newProcess = new Process(memory.getMemorySize(), clock);
 		memory.insertProcess(newProcess);
+		gui.setIoActive(newProcess);
 		flushMemoryQueue();
 		// Add an event for the next process arrival
 		long nextArrivalTime = clock + 1 + (long)(2*Math.random()*avgArrivalInterval);
@@ -201,31 +204,40 @@ public class Simulator implements Constants
 	 */
 	public static void main(String args[]) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Please input system parameters: ");
-
-		System.out.print("Memory size (KB): ");
-		long memorySize = readLong(reader);
-		while(memorySize < 400) {
-			System.out.println("Memory size must be at least 400 KB. Specify memory size (KB): ");
-			memorySize = readLong(reader);
-		}
-
-		System.out.print("Maximum uninterrupted cpu time for a process (ms): ");
-		long maxCpuTime = readLong(reader);
-
-		System.out.print("Average I/O operation time (ms): ");
-		long avgIoTime = readLong(reader);
-
-		System.out.print("Simulation length (ms): ");
-		long simulationLength = readLong(reader);
-		while(simulationLength < 1) {
-			System.out.println("Simulation length must be at least 1 ms. Specify simulation length (ms): ");
-			simulationLength = readLong(reader);
-		}
-
-		System.out.print("Average time between process arrivals (ms): ");
-		long avgArrivalInterval = readLong(reader);
-
+//		System.out.println("Please input system parameters: ");
+//		
+//		
+//		System.out.print("Memory size (KB): ");
+//		long memorySize = readLong(reader);
+//		while(memorySize < 400) {
+//			System.out.println("Memory size must be at least 400 KB. Specify memory size (KB): ");
+//			memorySize = readLong(reader);
+//		}
+//
+//		System.out.print("Maximum uninterrupted cpu time for a process (ms): ");
+//		long maxCpuTime = readLong(reader);
+//
+//		System.out.print("Average I/O operation time (ms): ");
+//		long avgIoTime = readLong(reader);
+//
+//		System.out.print("Simulation length (ms): ");
+//		long simulationLength = readLong(reader);
+//		while(simulationLength < 1) {
+//			System.out.println("Simulation length must be at least 1 ms. Specify simulation length (ms): ");
+//			simulationLength = readLong(reader);
+//		}
+//
+//		System.out.print("Average time between process arrivals (ms): ");
+//		long avgArrivalInterval = readLong(reader);
+		long memorySize = 2048;
+		long maxCpuTime = 500;
+		long avgIoTime = 225;
+		long simulationLength = 250000;
+		long avgArrivalInterval = 5000;
 		SimulationGui gui = new SimulationGui(memorySize, maxCpuTime, avgIoTime, simulationLength, avgArrivalInterval);
+		
+		
+		
+		
 	}
 }
