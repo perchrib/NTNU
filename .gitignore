@@ -84,4 +84,5 @@ local.properties
 
 **/.DS_Store
 **/.metadata/*
+**/.recommenders/*
 **/.DS_Store.orig
