@@ -22,6 +22,7 @@ public class Simulator implements Constants
 	/** The average length between process arrivals */
 	private long avgArrivalInterval;
 	// Add member variables as needed
+	private Queue mem,cpu,io;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -45,6 +46,9 @@ public class Simulator implements Constants
 		memory = new Memory(memoryQueue, memorySize, statistics);
 		clock = 0;
 		// Add code as needed
+		mem = memoryQueue;
+		cpu = cpuQueue;
+		io = ioQueue;
     }
 
     /**
@@ -59,20 +63,30 @@ public class Simulator implements Constants
 		// Genererate the first process arrival event
 		eventQueue.insertEvent(new Event(NEW_PROCESS, 0));
 		// Process events until the simulation length is exceeded:
+		
 		while (clock < simulationLength && !eventQueue.isEmpty()) {
 			// Find the next event
 			Event event = eventQueue.getNextEvent();
+			
+			System.out.println("AFTER: " + eventQueue.events.size());
+		
 			// Find out how much time that passed...
 			long timeDifference = event.getTime()-clock;
 			// ...and update the clock.
 			clock = event.getTime();
+			System.out.println("CLOCK: " + clock);			
 			// Let the memory unit and the GUI know that time has passed
 			memory.timePassed(timeDifference);
-			gui.timePassed(timeDifference);
+			
+				//gui.timePassed(timeDifference);
+			
+			
+	
+			
 			// Deal with the event
 			
 			if (clock < simulationLength) {
-				System.out.println(event.getType());
+				//System.out.println(event.getType());
 				processEvent(event);
 			}
 
@@ -116,9 +130,11 @@ public class Simulator implements Constants
 	private void createProcess() {
 		// Create a new process
 		Process newProcess = new Process(memory.getMemorySize(), clock);
+		
 		memory.insertProcess(newProcess);
-		gui.setIoActive(newProcess);
-		flushMemoryQueue();
+		
+		//flushMemoryQueue();
+		
 		// Add an event for the next process arrival
 		long nextArrivalTime = clock + 1 + (long)(2*Math.random()*avgArrivalInterval);
 		eventQueue.insertEvent(new Event(NEW_PROCESS, nextArrivalTime));
@@ -140,13 +156,19 @@ public class Simulator implements Constants
 
 			// Since we haven't implemented the CPU and I/O device yet,
 			// we let the process leave the system immediately, for now.
+			
 			memory.processCompleted(p);
+			
 			// Try to use the freed memory:
+			
 			flushMemoryQueue();
-			// Update statistics
+			
+				// Update statistics
+			
 			p.updateStatistics(statistics);
 
 			// Check for more free memory
+			
 			p = memory.checkMemory(clock);
 		}
 	}

@@ -11,7 +11,7 @@ import java.util.Collections;
 public class EventQueue
 {
 	/** The list of events */
-	private ArrayList events;
+	public ArrayList events;
 
 	/**
 	 * Creates a new Event Queue.
@@ -19,6 +19,7 @@ public class EventQueue
 	public EventQueue() {
 		events = new ArrayList();
 	}
+	
 
 	/**
 	 * Inserts an event in the queue.
@@ -39,7 +40,8 @@ public class EventQueue
 	 * @return	The event with the lowest time value in the queue.
 	 */
     public Event getNextEvent() {
-		  return (Event)events.remove(0);
+    	System.out.println("SIZE: " + events.size());
+		return (Event)events.remove(0);
     }
 
     /**

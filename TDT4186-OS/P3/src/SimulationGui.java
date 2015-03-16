@@ -114,6 +114,7 @@ public class SimulationGui extends JFrame implements Constants, ActionListener, 
 	public void run() {
 		running = true;
 		simulator.simulate();
+	
 	}
 
 	/**
