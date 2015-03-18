@@ -9,13 +9,26 @@ p8 = (3,4)
 p9 = (8,3)
 p10 = (4,4)
 
-
-dataset = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10]
+x = (6,3)
+y = (6,6)
+z = (8,5)
+#dataset = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10]
 
 c1 = [p1,p4,p8,p10]
 c2 = [p2,p3,p6]
 c3 = [p5,p7,p9]
+samples = [x,y,z]
+
 
 def getDataSet():
-	return dataset,c1,c2,c3
+	return [c1,c2,c3],samples
+
+
+
+
+
+
+
+
+
 

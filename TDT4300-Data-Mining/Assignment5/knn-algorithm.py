@@ -1,13 +1,72 @@
 import math
 import coordinates 
 
-dataset,c1,c2,c3 = coordinates.getDataSet()
+clusters,samples = coordinates.getDataSet()
 
+allSamples = []
+allPoints = []
 def euclidean(x,y):
 	return round(math.sqrt((x[0]-y[0])**2 + (x[1]-y[1])**2),2)
 
 def manhatten(x,y):
 	return abs(x[0]-y[0])+abs(x[1]-y[1])
+
+
+class Samples:
+	def __init__(self,grid):
+		self.grid = grid
+		self.x = grid[0]
+		self.y = grid[1]
+		self.neighbours = {}
+	
+
+
+	def getNeighbours(self,k):
+		return self.neighbours
+
+
+
+class Point:
+	totalClusters = []
+	def __init__(self,grid,cluster):
+		self.grid = grid
+		self.x = grid[0]
+		self.y = grid[1]
+		self.cluster = cluster
+		self.addClusters(cluster)
+		
+
+	def addClusters(self,cluster):
+		if cluster not in Point.totalClusters:
+			self.totalClusters.append(cluster)
+
+	
+
+	
+
+
+
+
+def generatePoints():
+	i = 1
+	for cluster in clusters:
+		whichCluster = "C" + str(i)
+		for grid in cluster:
+			allPoints.append(Point(grid,whichCluster))
+		i += 1
+		
+
+def generateSamples():
+	for s in samples:
+		allSamples.append(Samples(s))
+
+def generateNeighboursEucledian():
+	for s in allSamples:
+
+		for p in allPoints:
+			d = euclidean(s.grid,p.grid)
+			s.neighbours[p] = d
+
 
 
 
@@ -18,6 +77,9 @@ def modify(txt):
 		string += " "
 	string += txt
 	return string
+
+
+
 
 
 def printDistance(a):
@@ -45,7 +107,9 @@ def printDistance(a):
 		print "P"+ str(temp)+ str(x)+"\t" +dis+"\n"
 	
 
+generatePoints()
+generateSamples()
+generateNeighboursEucledian()
+for s in allSamples:
+	print s.neighbours
 
-
-
-printDistance(1)
