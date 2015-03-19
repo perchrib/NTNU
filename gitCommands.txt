@@ -1,0 +1,3 @@
+lsgit rm -r --cached .recommenders/ 				 [delete everything in a directory]
+git rm ---cached file.name 	 				 [delete file]
+git remote add origin git@github.com:perchrib/'repo-name'.git 		 [add directory to git, creating from computer (must create repository on github.com first]
