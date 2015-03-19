@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 clusters,samples = coordinates.getDataSet()
 
+
 allSamples = []
 allPoints = []
 def euclidean(x,y):
@@ -90,7 +91,7 @@ def classifier():
 		clusters = []
 		for n in s.shortestN:
 			clusters.append(n[0].cluster)
-		print s.name, "has nearest neighbour Type: ", clusters , "and belongs to: ", findWhichType(clusters)
+		print s.name, "has nearest neighbour TYPE: ", clusters , "CLASSIFY AS: ", findWhichType(clusters)
 
 
 def modify(txt):
@@ -140,6 +141,7 @@ def inputV():
 	return a,k
 
 
+
 def plotEverything(a):
 	c1x = []
 	c1y = []
@@ -183,11 +185,12 @@ def main():
 	generatePoints()
 	generateSamples()
 	if int(a) == 0:
-		print "\t\t" , "############ YOU CHOSEN MANHATTEN!!! ############"
+		print "\n", "\t\t" , "############ YOU CHOSEN MANHATTEN!!! ############"
 		generateNeighboursManhatten()
 	elif int(a) == 1:
-		print "\t\t" , "############ YOU CHOSEN EUCLIDIAN!!! ############"
+		print "\n", "\t\t" , "############ YOU CHOSEN EUCLIDIAN!!! ############","\n " 
 		generateNeighboursEucledian()
+	print  "K = ", k,"\n"
 	findNearestNeighbour(int(k))
 	classifier()
 	plotEverything(int(a))

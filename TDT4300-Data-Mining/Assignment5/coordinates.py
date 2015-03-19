@@ -23,7 +23,11 @@ samples = [x,y,z]
 def getDataSet():
 	return [c1,c2,c3],samples
 
+def getC1():
+	return c1
 
+def getSamples():
+	return samples
 
 
 
