@@ -128,18 +128,19 @@ def printDistance(a):
 				dis += modify(str(manhatten(dataset[x],dataset[y]))) + "\t"
 		
 		print "P"+ str(temp)+ str(x)+"\t" +dis+"\n"
-	
+
+
 def inputV():
 	k = input("type in a value of K-neighbours: ")
 	while int(k) < 0:
 		k = input("type in a value of K-neighbours: ")
-	a = input("type 0 for manhatten or 1 for eucledian: ")
+	a = input("type 0 for manhatten or 1 for euclidian: ")
 	while int(a) != 0 and int(a) !=1:
-		a = input("type 0 for manhatten or 1 for eucledian: ")
+		a = input("type 0 for manhatten or 1 for euclidian: ")
 	return a,k
 
 
-def plotEverything():
+def plotEverything(a):
 	c1x = []
 	c1y = []
 	c2x = []
@@ -171,7 +172,10 @@ def plotEverything():
 	fig.gca().add_artist(c3)
 	plt.legend()
 	plt.axis([0,12,0,10])
-	plt.title('k-NN')
+	if a == 0:
+		plt.title('k-NN : MANHATTEN')
+	else:
+		plt.title('k-NN : EUCLIDIAN')
 	plt.show()
 
 def main():
@@ -179,10 +183,12 @@ def main():
 	generatePoints()
 	generateSamples()
 	if int(a) == 0:
+		print "\t\t" , "############ YOU CHOSEN MANHATTEN!!! ############"
 		generateNeighboursManhatten()
 	elif int(a) == 1:
+		print "\t\t" , "############ YOU CHOSEN EUCLIDIAN!!! ############"
 		generateNeighboursEucledian()
 	findNearestNeighbour(int(k))
 	classifier()
-	plotEverything()
+	plotEverything(int(a))
 main()
