@@ -51,6 +51,13 @@ def getAllClasses():
 #	print s.name,s.cluster,s.grid
 
 
+def getSampleClass():
+	name = ["X","Y","Z"]
+	samp =[]
+	for s in range(len(samples)):
+		samp.append(Point(samples[s],"SAMPLE", name[s]))
+
+	return samp
 
 
 
