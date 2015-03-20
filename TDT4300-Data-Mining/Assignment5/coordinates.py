@@ -19,6 +19,41 @@ c2 = [p2,p3,p6]
 c3 = [p5,p7,p9]
 samples = [x,y,z]
 
+dataSet = []
+
+class Point:
+	def __init__(self,grid,cluster,name):
+		self.grid = grid
+		self.cluster = cluster
+		self.name = name
+
+
+	
+i = 0
+j = 0
+m = 0
+for x in range(1,11):
+	if x in [1,4,8,10]:
+		dataSet.append(Point(c1[i],"C1","P"+str(x))) 
+		i += 1
+	elif x in [2,3,6]:	
+		dataSet.append(Point(c2[j],"C2","P"+str(x))) 
+		j += 1
+	elif x in [5,7,9]:
+		dataSet.append(Point(c3[m],"C3","P"+str(x)))
+		m += 1
+
+
+def getAllClasses():
+	return dataSet
+
+#for s in dataSet:
+#	print s.name,s.cluster,s.grid
+
+
+
+
+
 
 def getDataSet():
 	return [c1,c2,c3],samples
