@@ -15,11 +15,28 @@ public class Statistics
 	public long memoryQueueLengthTime = 0;
 	/** The largest memory queue length that has occured */
 	public long memoryQueueLargestLength = 0;
+	
+	
     
 	/**
 	 * Prints out a report summarizing all collected data about the simulation.
 	 * @param simulationLength	The number of milliseconds that the simulation covered.
+	 * 
 	 */
+	
+	
+	public long cpuTimeSpent = 0;
+	public int processShifts = 0;
+	public int ioOps = 0;
+	public long ioTimeSpent;
+	public long ioQueueLengthTime = 0;
+	public int ioQueueLargestLength = 0;
+	public int insertsIOQueue = 0;
+	public int insertsCPUQueue = 0;
+	
+	
+	
+	
 	public void printReport(long simulationLength) {
 		System.out.println();
 		System.out.println("Simulation statistics:");

@@ -22,7 +22,11 @@ public class Simulator implements Constants
 	/** The average length between process arrivals */
 	private long avgArrivalInterval;
 	// Add member variables as needed
-	private Queue mem,cpu,io;
+	private Queue mem;
+	
+	private Cpu cpu;
+	private Io io;
+	private long avgIoTime;
 
 	/**
 	 * Constructs a scheduling simulator with the given parameters.
@@ -46,9 +50,12 @@ public class Simulator implements Constants
 		memory = new Memory(memoryQueue, memorySize, statistics);
 		clock = 0;
 		// Add code as needed
-		mem = memoryQueue;
-		cpu = cpuQueue;
-		io = ioQueue;
+		//mem = memoryQueue;
+		cpu = new Cpu(cpuQueue,gui, eventQueue,maxCpuTime,statistics);
+		
+		this.avgIoTime = avgIoTime;
+		io = new Io(ioQueue, statistics, eventQueue, gui);
+		
     }
 
     /**
@@ -68,17 +75,20 @@ public class Simulator implements Constants
 			// Find the next event
 			Event event = eventQueue.getNextEvent();
 			
-			System.out.println("AFTER: " + eventQueue.events.size());
+				//System.out.println("AFTER: " + eventQueue.events.size());
 		
 			// Find out how much time that passed...
-			long timeDifference = event.getTime()-clock;
+			
+			long timeDifference = Math.abs(event.getTime()-clock);
 			// ...and update the clock.
 			clock = event.getTime();
-			System.out.println("CLOCK: " + clock);			
+				//System.out.println("CLOCK: " + clock);	
+			
 			// Let the memory unit and the GUI know that time has passed
+			System.out.println("TIMEMEMEMME:     " + timeDifference + "  CLOCK   " + clock + "  EventTime " +  event.getTime());
 			memory.timePassed(timeDifference);
 			
-				//gui.timePassed(timeDifference);
+			gui.timePassed(timeDifference);
 			
 			
 	
@@ -129,15 +139,23 @@ public class Simulator implements Constants
 	 */
 	private void createProcess() {
 		// Create a new process
-		Process newProcess = new Process(memory.getMemorySize(), clock);
+		Process newProcess = new Process(memory.getMemorySize(), clock, avgIoTime);
 		
 		memory.insertProcess(newProcess);
 		
-		//flushMemoryQueue();
+		
+		
+		
+		
+		flushMemoryQueue();
 		
 		// Add an event for the next process arrival
+		
+		
 		long nextArrivalTime = clock + 1 + (long)(2*Math.random()*avgArrivalInterval);
 		eventQueue.insertEvent(new Event(NEW_PROCESS, nextArrivalTime));
+		
+		//System.out.println("NEXT TIME ARRIVAL: " + nextArrivalTime);
 		// Update statistics
 		statistics.nofCreatedProcesses++;
     }
@@ -151,13 +169,27 @@ public class Simulator implements Constants
 		// As long as there is enough memory, processes are moved from the memory queue to the cpu queue
 		while(p != null) {
 			
+			
+			
+			
+			
+			cpu.addCpuQueue(p,clock);
+			
+			
+			
+			
+			//eventQueue.insertEvent(new Event(SWITCH_PROCESS, nextArrivalTime));
+			
+			
+			
+			
 			// TODO: Add this process to the CPU queue!
 			// Also add new events to the event queue if needed
 
 			// Since we haven't implemented the CPU and I/O device yet,
 			// we let the process leave the system immediately, for now.
 			
-			memory.processCompleted(p);
+				//memory.processCompleted(p);
 			
 			// Try to use the freed memory:
 			
@@ -177,7 +209,8 @@ public class Simulator implements Constants
 	 * Simulates a process switch.
 	 */
 	private void switchProcess() {
-		// Incomplete
+		cpu.switchProcess();
+		cpu.roundRobin(clock);
 	}
 
 	/**
@@ -185,6 +218,10 @@ public class Simulator implements Constants
 	 */
 	private void endProcess() {
 		// Incomplete
+		Process p = io.getCompletedProcess();
+		io.doIo(clock);
+		p.leftIoQueue(clock);
+		cpu.insertProcess(p, clock);
 	}
 
 	/**
@@ -192,7 +229,9 @@ public class Simulator implements Constants
 	 * perform an I/O operation.
 	 */
 	private void processIoRequest() {
-		// Incomplete
+		Process p = cpu.fetchCurrentProcess();
+		p.leftCpuQueue(clock);
+		io.insertProcess(p, clock);
 	}
 
 	/**
@@ -200,6 +239,10 @@ public class Simulator implements Constants
 	 * is done with its I/O operation.
 	 */
 	private void endIoOperation() {
+		Process p = io.getCompletedProcess();
+		io.doIo(clock);
+		p.leftIoQueue(clock);
+		cpu.insertProcess(p, clock);
 		// Incomplete
 	}
 
