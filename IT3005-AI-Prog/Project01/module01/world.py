@@ -1,20 +1,32 @@
 from Tkinter import *
 
-
+case = [[(10,10),(0,0),(9,9),(2,3,5,5),(8,8,2,1)],
+[(20,20),(19,3),(2,18),(5,5,10,10),(1,2,4,1)],
+[(20,20),(0,0),(19,19),(17,10,2,1),(14,4,5,2),(3,16,10,2),(13,7,5,3),(15,15,3,3)],
+[(10,10),(0,0),(9,5),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
+[(10,10),(0,0),(9,9),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
+[(20,20),(0,0),(19,13),(4,0,4,16),(12,4,2,16),(16,8,4,4)]]
 
 def startInput():
-	dimension = input("Dimension ")
-	start = input("Youre Start Point: ")
-	end = input("Youre End Point: ")
-	board = Board(dimension,start,end)
-	#board = Board((10,10),(1,1),(9,9))
+	#dimension = input("Dimension ")
+	#start = input("Youre Start Point: ")
+	#end = input("Youre End Point: ")
+	scenario = input("type scenario: ")
+	tempScenario = case[scenario]
+	#board = Board(dimension,start,end)
+	board = Board(tempScenario[0],tempScenario[1],tempScenario[2])
 	allBoards.append(board)
-	inValue = 1
-	while (inValue != 0):
-		inValue =  input("Type grid for obstacles and 0 for finish ")
-		if inValue != 0:
-			tempObstacle = Obstacle(inValue)
-			allObstacles.append(tempObstacle)
+	
+	for obstacles in tempScenario[3:]:
+		tempObstacle = Obstacle(obstacles)
+		allObstacles.append(tempObstacle)
+
+	#inValue = 1
+	#while (inValue != 0):
+	#	inValue =  input("Type grid for obstacles and 0 for finish ")
+	#	if inValue != 0:
+	#		tempObstacle = Obstacle(inValue)
+	#		allObstacles.append(tempObstacle)
 			
 
 	board.createBoard()
@@ -131,21 +143,25 @@ def drawBoard(board):
 	#for i in range(board.getYdim()):    
 	#	canvas.create_line(0, 50 * i, 500, 50 * i)
 	
-
+	i = 48
+	j = 1
 	for x in range(board.getYdim()):
 		for y in range(board.getXdim()):
-			gridx = width/board.getXdim()*y 
-			gridy = height/board.getYdim()*x 
+			if (board.getYdim()> 15 or board.getXdim() > 15):
+				i = 24
+				j = 2
+			gridx = width/board.getXdim()/j*y 
+			gridy = height/board.getYdim()/j*x 
 			if board.getBoard()[x][y] == '-':
-				canvas.create_rectangle(gridx+2,gridy + 2, gridx+48, gridy+48, fill="mint cream")
+				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="mint cream")
 			elif board.getBoard()[x][y] == 'S':
-				canvas.create_rectangle(gridx+2,gridy + 2, gridx+48, gridy+48, fill="lime green")
+				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="lime green")
 			elif board.getBoard()[x][y] == 'F':
-				canvas.create_rectangle(gridx+2,gridy + 2, gridx+48, gridy+48, fill="red")
+				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="red")
 			elif board.getBoard()[x][y] == '*':
-				canvas.create_rectangle(gridx+2,gridy + 2, gridx+48, gridy+48, fill="grey")
+				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="grey")
 			elif board.getBoard()[x][y] == '>':
-				canvas.create_rectangle(gridx+2,gridy + 2, gridx+48, gridy+48, fill="light blue")
+				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="light blue")
 			
 
 

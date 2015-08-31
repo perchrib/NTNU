@@ -47,16 +47,23 @@ def deleteAlreadyClosedNodesFromGeneratedSuccessors(successors,queue):
 	for s in successors:
 		for c in queue:
 			if (cmp(s.state,c.state) == 0):
-				print "EQUAL: " ,s.state
-				modifiedList.remove(s)
+				print "copy:       ", modifiedList
+				print "successors: " , successors
+				#if (s in modifiedList):
+					#modifiedList.remove(s)
+				#print "Deleted states: ", s.state
+				
+			#print "EQUAL: " ,s.state
+
 	return modifiedList
-			
+
+
 
 def a_star():
 	openQueue = []
 	closedQueue = []
 	n0 = Node(board.getStartPoint(),OPEN,None,[])
-	heappush(openQueue,(n0.h,n0))
+	heappush(openQueue,(n0.f,n0))
 	##AGENDA LOOP##
 	iteration = 0
 	while (openQueue):
@@ -65,11 +72,15 @@ def a_star():
 			print "Failed"
 
 
-		xNode = heappop(openQueue)[1]
+		xNode = heappop(openQueue)[1] ##check!!!
 		xNode.status = CLOSED
 		heappush(closedQueue, xNode)
+		for s in closedQueue:
+			print "All coordinates in closedQueue: ", s.state
 		#print "Open ", openQueue, "Closed ", closedQueue
-		print "xNode: ", xNode.state
+		print "\n"
+		print "Current NODE : ", xNode.state
+		print "\n"
 		if (cmp(xNode.state, Node.finishPoint) == 0):
 			print "Finish"
 			path = findPath(xNode)
@@ -82,24 +93,25 @@ def a_star():
 
 
 
-		successors = generateAllSuccsessors(xNode)
-		i = 0
-		successors = deleteAlreadyClosedNodesFromGeneratedSuccessors(successors,closedQueue)
+		tempSuccessors = generateAllSuccsessors(xNode)
+		
+		
+		successors = deleteAlreadyClosedNodesFromGeneratedSuccessors(tempSuccessors,closedQueue)
 		for success in successors:
 			for e in openQueue:
 				openNode = e[1]
 				if (cmp(success.state,openNode.state) == 0):
-					print "GENERATED EARLIER"
 					success = openNode
+					print "\n Already in OPEN QUEUE", success.state ,"  Status: ", success.status
 					#print "STATUS EARLIER::::::: ", 
 					## Mybe delete this node from openqueue
-			i += 1
 
 			xNode.kids.append(success)
 			if (not success.status == CLOSED and not success.status == OPEN):
 				attachAndEval(success,xNode)
 				success.status = OPEN
-				heappush(openQueue, (success.h ,success))
+				print "Hereeeeee: >>>> " , success.f
+				heappush(openQueue, (success.f ,success))
 				print "generated next step: ", success.state, "next step STATUS: ", success.status
 			elif (xNode.g + 1 < success.g):
 				print "HERE TRIGGER"
@@ -145,6 +157,7 @@ def generateAllSuccsessors(nodeX):
 
 
 a_star()
+
 
 
 
