@@ -47,13 +47,7 @@ def deleteAlreadyClosedNodesFromGeneratedSuccessors(successors,queue):
 	for s in successors:
 		for c in queue:
 			if (cmp(s.state,c.state) == 0):
-				print "copy:       ", modifiedList
-				print "successors: " , successors
-				#if (s in modifiedList):
-					#modifiedList.remove(s)
-				#print "Deleted states: ", s.state
-				
-			#print "EQUAL: " ,s.state
+				modifiedList.remove(s)
 
 	return modifiedList
 
@@ -66,17 +60,26 @@ def a_star():
 	heappush(openQueue,(n0.f,n0))
 	##AGENDA LOOP##
 	iteration = 0
-	while (openQueue):
+	while (True):
 		print "ITERATIONS: ", iteration
 		if (not openQueue):
 			print "Failed"
 
 
-		xNode = heappop(openQueue)[1] ##check!!!
+		tNode = heappop(openQueue) ##check!!!
+		xNode = tNode[1]
 		xNode.status = CLOSED
-		heappush(closedQueue, xNode)
+		#if(not xNode in closedQueue):
+		#	heappush(closedQueue,xNode)
+		q = True
+		
 		for s in closedQueue:
-			print "All coordinates in closedQueue: ", s.state
+			print "ClosedQueue: ", s.state
+			if(cmp(s.state,xNode.state)== 0):
+
+				q = False
+		if(q == True):
+			heappush(closedQueue,xNode)
 		#print "Open ", openQueue, "Closed ", closedQueue
 		print "\n"
 		print "Current NODE : ", xNode.state
@@ -107,11 +110,11 @@ def a_star():
 					## Mybe delete this node from openqueue
 
 			xNode.kids.append(success)
-			if (not success.status == CLOSED and not success.status == OPEN):
+			if ((not success.status == CLOSED) and (not success.status == OPEN)):
 				attachAndEval(success,xNode)
 				success.status = OPEN
 				print "Hereeeeee: >>>> " , success.f
-				heappush(openQueue, (success.f ,success))
+				heappush(openQueue,(success.f,success))
 				print "generated next step: ", success.state, "next step STATUS: ", success.status
 			elif (xNode.g + 1 < success.g):
 				print "HERE TRIGGER"
