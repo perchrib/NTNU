@@ -124,6 +124,7 @@ def addObstacles(board):
 
 
 
+
 def drawBoard(board):
 
 	root = Tk()
@@ -137,12 +138,6 @@ def drawBoard(board):
 		height = board.getYdim()/2*100+50
 	canvas = Canvas(root, width= width,height=height)
 	canvas.pack()
-
-	#for i in range(board.getXdim()):
-	#    canvas.create_line(50 * i, 0, 50 * i, 500)
-	#for i in range(board.getYdim()):    
-	#	canvas.create_line(0, 50 * i, 500, 50 * i)
-	
 	i = 48
 	j = 1
 	for x in range(board.getYdim()):
@@ -162,10 +157,28 @@ def drawBoard(board):
 				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="grey")
 			elif board.getBoard()[x][y] == '>':
 				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="light blue")
+			elif board.getBoard()[x][y] == 'g':
+				canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="sandy brown")
+
+	#for i in range(board.getXdim()):
+	#    canvas.create_line(50 * i, 0, 50 * i, 500)
+	#for i in range(board.getYdim()):    
+	#	canvas.create_line(0, 50 * i, 500, 50 * i)
+	
+	
 			
 
 
+	#root.update()
+	#root.update_idletasks()
+	#root.update()			
 	root.mainloop()
+
+
+def updateBoard(board):
+	return None
+
+
 	
 def getBoard():
 	return allBoards[0]

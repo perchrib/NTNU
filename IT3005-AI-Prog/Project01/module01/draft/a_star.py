@@ -28,7 +28,11 @@ class Node:
 	def heuristic(self):
 		return sqrt(((self.state[0]-Node.finishPoint[0])**2) + (self.state[1]-Node.finishPoint[1]))
 	
+	def isStart(self):
+		return board.getStartPoint() == self.state
 
+	def isEndPoint(self):
+		return board.getFinish() == self.state
 
 def findPath(node):
 	route = []
@@ -53,22 +57,41 @@ def deleteAlreadyClosedNodesFromGeneratedSuccessors(successors,queue):
 
 
 
+
 def a_star():
 	openQueue = []
+
+	
 	closedQueue = []
 	n0 = Node(board.getStartPoint(),OPEN,None,[])
 	heappush(openQueue,(n0.f,n0))
+
+	openstack = [n0]
 	##AGENDA LOOP##
 	iteration = 0
-	while (True):
+	while (openstack or openQueue):
 		print "ITERATIONS: ", iteration
 		if (not openQueue):
 			print "Failed"
 
+		a_star = True
+		DFS = False
+		BFS = False
+		
+		if (a_star):
+			tNode = heappop(openQueue) ##check!!!
+			xNode = tNode[1]
+		
+		elif (DFS):
+			xNode = openstack.pop()
 
-		tNode = heappop(openQueue) ##check!!!
-		xNode = tNode[1]
+		elif (BFS):
+			xNode = openstack.pop(0)
+
 		xNode.status = CLOSED
+		#board.board[xNode.state[0]][xNode.state[1]] = '>'
+		#world.updateBoard(board)
+		
 		#if(not xNode in closedQueue):
 		#	heappush(closedQueue,xNode)
 		q = True
@@ -80,6 +103,8 @@ def a_star():
 				q = False
 		if(q == True):
 			heappush(closedQueue,xNode)
+			if not (xNode.isStart() or xNode.isEndPoint()):
+				board.board[xNode.state[0]][xNode.state[1]] ='g'
 		#print "Open ", openQueue, "Closed ", closedQueue
 		print "\n"
 		print "Current NODE : ", xNode.state
@@ -92,6 +117,8 @@ def a_star():
 				board.board[r.state[0]][r.state[1]] = '>'
 			board.printBoard()
 			world.drawBoard(board)
+			print "Length Open: ", len(openQueue)
+			print "Length Closed: ", len(closedQueue)
 			break
 
 
@@ -100,6 +127,7 @@ def a_star():
 		
 		
 		successors = deleteAlreadyClosedNodesFromGeneratedSuccessors(tempSuccessors,closedQueue)
+		print "SUCCCCCCC:::: ", len(successors)
 		for success in successors:
 			for e in openQueue:
 				openNode = e[1]
@@ -115,6 +143,7 @@ def a_star():
 				success.status = OPEN
 				print "Hereeeeee: >>>> " , success.f
 				heappush(openQueue,(success.f,success))
+				openstack.append(success) ## This is for DFS/BFS SEARCH
 				print "generated next step: ", success.state, "next step STATUS: ", success.status
 			elif (xNode.g + 1 < success.g):
 				print "HERE TRIGGER"
@@ -150,6 +179,7 @@ def generateAllSuccsessors(nodeX):
 		state = (stepX,stepY)
 		#print "state successors: ", state 
 		if ((stepX >= 0 and stepX < board.getXdim()) and (stepY >= 0 and stepY < board.getYdim()) and board.isNotObstacle(stepX,stepY)): 
+			
 			successNode = Node(state,None,None,[])
 			successors.append(successNode)
 			print "SUCSESSOR: ", state
