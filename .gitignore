@@ -76,7 +76,8 @@ local.properties
 # Python 
 ###############
 
-**/.pyc
+
+*.pyc
 
 
 
