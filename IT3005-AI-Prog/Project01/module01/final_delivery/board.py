@@ -1,10 +1,11 @@
 import Tkinter as tk
 from math import sqrt
 from a_star import A_star
+from time import clock
 
 
 case = [[(10,10),(0,0),(9,9),(2,3,5,5),(8,8,2,1)],
-[(20,20),(19,3),(2,18),(5,5,10,10),(1,2,4,1)],
+[(20,20),(19,3),(2,18),(5,5,10,10),(1,2,4,1),(8,15,1,5)],
 [(20,20),(0,0),(19,19),(17,10,2,1),(14,4,5,2),(3,16,10,2),(13,7,5,3),(15,15,3,3)],
 [(10,10),(0,0),(9,5),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
 [(10,10),(0,0),(9,9),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
@@ -62,7 +63,7 @@ class Node:
 		Node.generateID += 1
 
 	def __lt__(self,other):
-		return self.h < other.h
+		return self.f < other.f
 
 	def isEmpty(self):
 		if self.isObstacle == True or self.isStart == True or self.isFinish == True:
@@ -72,8 +73,10 @@ class Node:
 
 	def generateNeighbours(self):
 		if not self.neighbours:
-			dx = [1,0,-1,0]
-			dy = [0,1,0,-1]
+			#dx = [1,0,-1,0]
+			#dy = [0,1,0,-1]
+			dx = [0,-1,1,0]
+			dy = [1,0,0,-1]
 
 			for i in range(4):
 				stepX = dx[i] + self.state[0]
@@ -86,12 +89,6 @@ class Node:
 		elif self.neighbours:
 			print "Already GENERATED!"
 						
-
-
-
-
-
-
 
 def addObstacles(board, allObstacles):
 	numOfObstacles = len(allObstacles)
@@ -119,7 +116,6 @@ class Draw(tk.Tk):
 		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.canvas.pack()
-		self.light_on = True
 		i = 48
 		j = 1
 		for x in range(board.Ydim):
@@ -141,17 +137,43 @@ class Draw(tk.Tk):
 					self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="red",tags=tag)
 				elif node.isObstacle:
 					self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="grey",tags=tag)
-				# elif board.getBoard()[x][y] == '>':
-				# 	self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="light blue",tags=tag)
-				# elif board.getBoard()[x][y] == 'g':
-				# 	self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="sandy brown",tags=tag)
+				
 		
 
 	
 
 def main():
-	scenario = input("type scenario: ")
-	tempScenario = case[scenario]
+	isScenario = raw_input("Scenarios? y=>YES or ENTER=> NO : ")
+	if isScenario:
+		scenario = input("type scenario 0-6: ")
+		tempScenario = case[scenario]
+	else:
+		dim = input("Dimension: ")
+		start = input("Start Node: ")
+		end = input("End Node: ")
+		tempScenario = [dim,start,end]
+		if_obstacle = raw_input("Obstacle?,y=>YES ENTER=> NO: ") 
+		while if_obstacle:
+			obstacle = input("Obstacle: start,end,breadth,height: ")
+			tempScenario.append(obstacle) 
+			if_obstacle = raw_input("Contiunue? y=>YES, ENTER=>NO")
+
+
+
+	type_of_search = raw_input("type astar, bfs or dfs: ")
+	isGui = raw_input("With GUI? y or ENTER=> NO: ")
+	if isGui:
+		speed = raw_input("Choose speed: f=>FAST :: MEDIUM=>m :: SLOW=>s :: VERY SLOW=>vs ")
+		if speed == 'f':
+			speed = 5
+		elif speed == 'm':
+			speed = 100
+		elif speed == 's':
+			speed = 500
+		elif speed == 'vs':
+			speed = 2000
+
+
 	allObstacles = []
 	
 	for obstacles in tempScenario[3:]:
@@ -160,13 +182,18 @@ def main():
 	board = Board(tempScenario[0],tempScenario[1],tempScenario[2])
 	board.createBoard()
 	addObstacles(board,allObstacles)
-	#drawBoard(board)
+	if isGui:	
+		draw = Draw(board)
+		a_star = A_star(board,draw,type_of_search,speed)
 
-	draw = Draw(board)
-	a_star = A_star(board,draw,'astar')
+	else:
+		a_star = A_star(board,False,type_of_search,None)
+	start = clock()
 	a_star.mainLoop()
-	
-	draw.mainloop()
+	stop = clock()
+	print round((stop-start)*1000,2),"ms"
+	if isGui:
+		draw.mainloop()
 
 main()
 
