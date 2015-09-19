@@ -10,7 +10,8 @@ case = [[(10,10),(0,0),(9,9),(2,3,5,5),(8,8,2,1)],
 [(10,10),(0,0),(9,5),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
 [(10,10),(0,0),(9,9),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
 [(20,20),(0,0),(19,13),(4,0,4,16),(12,4,2,16),(16,8,4,4)],
-[(20,20,),(0,0),(19,19)]]
+[(150,150),(0,0),(149,149),(8,0,50,20),(60,70,10,30)],
+[(50,50),(0,0),(49,49)]]
 
 
 
@@ -88,6 +89,7 @@ class Node:
 						self.neighbours.append(neighbour)
 		elif self.neighbours:
 			print "Already GENERATED!"
+
 						
 
 def addObstacles(board, allObstacles):
@@ -116,6 +118,8 @@ class Draw(tk.Tk):
 		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.canvas.pack()
+		node_size = (self.winfo_screenheight()-50)/board.Ydim 
+		print "node size: " , node_size
 		i = 48
 		j = 1
 		for x in range(board.Ydim):
@@ -123,20 +127,27 @@ class Draw(tk.Tk):
 				if (board.Ydim > 15 or board.Xdim > 15):
 					i = 24
 					j = 2
-				gridx = self.width/board.Xdim/j*y 
-				gridy = self.height/board.Ydim/j*x 
-				
+				#gridx = self.width/board.Xdim/j*y 
+				#gridy = self.height/board.Ydim/j*x 
+				gridx = node_size*y+1
+				gridy = node_size*x+1
+				gridx2 = gridx + node_size -2
+				gridy2 = gridy + node_size -2
 				node = board.board[x][y] 
 				tag = node.ID
 				
 				if node.isEmpty():
-					self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="mint cream",tags=tag)
+					#self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="mint cream",tags=tag)
+					self.canvas.create_rectangle(gridx,gridy, gridx2, gridy2, fill="mint cream",tags=tag)
 				elif node.isStart:
-					self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="lime green",tags=tag)
+					#self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="lime green",tags=tag)
+					self.canvas.create_rectangle(gridx,gridy, gridx2, gridy2, fill="lime green",tags=tag)
 				elif node.isFinish:
-					self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="red",tags=tag)
+					#self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="red",tags=tag)
+					self.canvas.create_rectangle(gridx,gridy, gridx2, gridy2, fill="red",tags=tag)
 				elif node.isObstacle:
-					self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="grey",tags=tag)
+					#self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="grey",tags=tag)
+					self.canvas.create_rectangle(gridx,gridy, gridx2, gridy2, fill="grey",tags=tag)
 				
 		
 
@@ -145,7 +156,7 @@ class Draw(tk.Tk):
 def main():
 	isScenario = raw_input("Scenarios? y=>YES or ENTER=> NO : ")
 	if isScenario:
-		scenario = input("type scenario 0-6: ")
+		scenario = input("type scenario 0-7: ")
 		tempScenario = case[scenario]
 	else:
 		dim = input("Dimension: ")

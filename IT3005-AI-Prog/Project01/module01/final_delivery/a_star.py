@@ -1,4 +1,5 @@
 from search_queue import SearchQueue
+from math import sqrt
 import itertools
 
 
@@ -6,7 +7,7 @@ class A_star():
 	def __init__(self, board, gui, searchMethod,speed):
 		self.speed = speed
 		self.gui = gui
-			
+		self.cost = 0.1
 		self.board = board
 		self.openStore = SearchQueue(searchMethod)
 		self.closedStore = SearchQueue(searchMethod)
@@ -30,8 +31,8 @@ class A_star():
 			#print "Current Node State: ",currentNode.state,"   Current Node Heuristic: ", currentNode.h
 
 			if self.gui:
-				self.drawPath(currentNode)
-				self.rase()
+				#self.drawPath(currentNode)
+				#self.rase()
 				if not currentNode.isStart and not currentNode.isFinish:
 					self.gui.canvas.itemconfig(currentNode.ID, fill="chocolate3")
 				self.gui.after(self.speed,self.gui.update())
@@ -61,23 +62,29 @@ class A_star():
 					node.status = 'OPEN'
 					self.openStore.add(node)
 
-				elif currentNode.g + 1 < node.g:
-					attachAndEval(node,currentNode)
+				elif currentNode.g + self.arc_cost(currentNode,node) < node.g:
+					self.attachAndEval(node,currentNode)
 					print"DENNE"
 					if node == 'CLOSED':
+						print "Fitte"
 						improve_path(node)
 
 
 
+	
+	def arc_cost(self,currentNode,neighbour):
+		return sqrt(((currentNode.state[0]-neighbour.state[0])**2) + ((currentNode.state[1]-neighbour.state[1])**2)) * self.cost
+
+
 	def attachAndEval(self,node,currentNode):
 		node.parent = currentNode
-		node.g = currentNode.g + 1
+		node.g = currentNode.g + self.arc_cost(currentNode,node)
 		node.f = node.g + node.h
 
-	def improve_path(node):
-		for kid in node.kids:
-			kid.parent = node
-			kid.g = node.g + 1
+	def improve_path(currentNode):
+		for kid in currentNode.kids:
+			kid.parent = currentNode
+			kid.g = currentNode.g + self.arc_cost(currentNode,kid)
 			kid.f = kid.c + kid.h
 
 	def findPath(self, node):
