@@ -29,7 +29,6 @@ class SearchQueue():
 
 	def string(self):
 		for x in self.storage:
-			#x = x[1]
 			print "F(h): ", x.f ,  "State: " , x.state, "h(): ", x.h
 			 
 

@@ -10,8 +10,9 @@ case = [[(10,10),(0,0),(9,9),(2,3,5,5),(8,8,2,1)],
 [(10,10),(0,0),(9,5),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
 [(10,10),(0,0),(9,9),(3,0,2,7),(6,0,4,4),(6,6,2,4)],
 [(20,20),(0,0),(19,13),(4,0,4,16),(12,4,2,16),(16,8,4,4)],
-[(150,150),(0,0),(149,149),(8,0,50,20),(60,70,10,30)],
-[(50,50),(0,0),(49,49)]]
+[(200,200),(0,0),(149,149),(8,0,50,20),(60,70,10,30)],
+[(4,4),(0,0),(3,3),(2,2,1,1)]]
+
 
 
 
@@ -107,26 +108,14 @@ def addObstacles(board, allObstacles):
 class Draw(tk.Tk):
 	def __init__(self,board):
 		tk.Tk.__init__(self)
-		if (board.Xdim % 2 == 0):
-			self.width = board.Xdim/2*100
-		else:
-			self.width = board.Xdim/2*100+50
-		if (board.Ydim % 2 == 0):
-			self.height = board.Ydim/2*100
-		else:
-			self.height = board.Ydim/2*100+50
-		
+		node_size = (self.winfo_screenheight()-50)/board.Ydim 
+		self.width = self.winfo_screenheight()
+		self.height = self.winfo_screenheight()
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.canvas.pack()
-		node_size = (self.winfo_screenheight()-50)/board.Ydim 
 		print "node size: " , node_size
-		i = 48
-		j = 1
 		for x in range(board.Ydim):
 			for y in range(board.Xdim):
-				if (board.Ydim > 15 or board.Xdim > 15):
-					i = 24
-					j = 2
 				#gridx = self.width/board.Xdim/j*y 
 				#gridy = self.height/board.Ydim/j*x 
 				gridx = node_size*y+1

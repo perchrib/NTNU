@@ -7,7 +7,7 @@ class A_star():
 	def __init__(self, board, gui, searchMethod,speed):
 		self.speed = speed
 		self.gui = gui
-		self.cost = 0.1
+		self.cost = 1
 		self.board = board
 		self.openStore = SearchQueue(searchMethod)
 		self.closedStore = SearchQueue(searchMethod)
@@ -31,10 +31,10 @@ class A_star():
 			#print "Current Node State: ",currentNode.state,"   Current Node Heuristic: ", currentNode.h
 
 			if self.gui:
-				#self.drawPath(currentNode)
-				#self.rase()
-				if not currentNode.isStart and not currentNode.isFinish:
-					self.gui.canvas.itemconfig(currentNode.ID, fill="chocolate3")
+				self.drawPath(currentNode)
+				self.rase()
+				#if not currentNode.isStart and not currentNode.isFinish:
+					#self.gui.canvas.itemconfig(currentNode.ID, fill="chocolate3")
 				self.gui.after(self.speed,self.gui.update())
 			
 			if currentNode.isFinish:
@@ -54,10 +54,10 @@ class A_star():
 					#	self.openStore.add(node)
 				currentNode.kids.append(node)
 				if not node.status == 'OPEN' and not node.status == 'CLOSED':					
-					if not node.isFinish:
-						if self.gui:
-							self.gui.canvas.itemconfig(node.ID, fill="sandy brown")
-							self.gui.after(self.speed,self.gui.update())
+					#if not node.isFinish:
+						#if self.gui:
+							#self.gui.canvas.itemconfig(node.ID, fill="sandy brown")
+							#self.gui.after(self.speed,self.gui.update())
 					self.attachAndEval(node,currentNode)
 					node.status = 'OPEN'
 					self.openStore.add(node)
