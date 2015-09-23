@@ -1,6 +1,4 @@
 import Tkinter as tk
-from math import sqrt
-
 
 class Vertex:
 	def __init__(self,index,x,y):
@@ -10,9 +8,6 @@ class Vertex:
 		self.neighbour = []
 		self.guiX = None
 		self.guiY = None
-
-
-
 
 class Draw(tk.Tk):
 	def __init__(self,allVertex,min_max):
@@ -66,23 +61,14 @@ class Draw(tk.Tk):
 		if self.ymin < 0:  
 			self.lineshift_y = abs(self.ymin) 
 		print "scaleX: ",self.scaleX, " scaleY: ",self.scaleY
-		
-
-	
 
 	def plotFitScreenX(self,x):
 		s = (self.lineshift_x + x) * self.scaleX
 		return s + self.padding/2
 
-
-
 	def plotFitScreenY(self,y):
 		s = (self.lineshift_y + y) * self.scaleY
 		return s + (self.padding/2)
-
-
-
-				
 
 def initiateData(data):
 	initData = data.pop(0)
@@ -115,7 +101,7 @@ def readFile(f):
 	return data
 
 if __name__ == "__main__":
-	f = "graphs/graph_6.txt"
+	f = "graphs/graph_1.txt"
 	init, allvertex,min_max = initiateData(readFile(f))
 	gui = Draw(allvertex,min_max)
 	gui.mainloop()
