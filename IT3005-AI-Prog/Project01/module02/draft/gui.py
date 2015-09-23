@@ -15,43 +15,34 @@ class Vertex:
 
 
 class Draw(tk.Tk):
-	def __init__(self,allVertex):
+	def __init__(self,allVertex,min_max):
 		tk.Tk.__init__(self)
-		#node_size = (self.winfo_screenheight()-50)/board.Ydim 
-		scale = 0.01 #Scaling
-		r = 5 #radius
-		i = 5 #Indent
-
-		#0 0 5
-		#1 3 3
-		#2 3 7
-
+		self.xmin = min_max[0]
+		self.xmax = min_max[1]
+		self.ymin = min_max[2]
+		self.ymax = min_max[3]
+		self.xAxis = 0
+		self.yAxis = 0
+		self.scaleX = 0
+		self.scaleY = 0
+		self.lineshift_x = 0
+		self.lineshift_y = 0
 		self.width = self.winfo_screenwidth()
 		self.height = self.winfo_screenheight()
+		self.padding = 50
+		self.calculateScaling()
+		r = 10 #radius
+		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
-		self.canvas.pack()
+		self.canvas.pack(fill='both',expand='yes')
 		index = 0
-		for vertex in allVertex:
-			
-			x = (vertex.x + i) * scale
-			y = (vertex.y + i) * scale
-			vertex.guiX = x
-			vertex.guiY = y
-			
-			print "Current: ", x,y
 
-			
-			
-			
-				
+		for vertex in allVertex:
 			for neighbour in vertex.neighbour:
-				print "Current x:%d y:%d" %(x,y)
-				#print "neighbour x:%d y%d" %(neighbour.x,neighbour.y)
-				t = r / 2.0
-				print "TTTT: ",t
-				neighbourX = (neighbour.x+i)*scale
-				neighbourY = (neighbour.y+i)*scale
-				self.canvas.create_line(x+t,y+t,neighbourX+t,neighbourY+t)
+				m = r / 2.0 
+				nx = neighbour.x
+				ny = neighbour.y
+				self.canvas.create_line(self.plotFitScreenX(vertex.x)+m,self.plotFitScreenY(vertex.y)+m,self.plotFitScreenX(nx)+m,self.plotFitScreenY(ny)+m)
 		
 		for vertex in allVertex:
 			color = ['red','blue','green']
@@ -59,26 +50,61 @@ class Draw(tk.Tk):
 			if index == 3:
 				index = 0
 
-			self.canvas.create_oval(vertex.guiX,vertex.guiY,vertex.guiX+r,vertex.guiY+r,fill=color[index],tag=vertex.index)
+			self.canvas.create_oval(self.plotFitScreenX(vertex.x),self.plotFitScreenY(vertex.y),self.plotFitScreenX(vertex.x)+r,self.plotFitScreenY(vertex.y)+r,fill=color[index],tag=vertex.index)
 			index += 1
+
+	def calculateScaling(self):
+		print "xmin: ", self.xmin, " xmax: ",self.xmax, " ymin: ", self.ymin," ymax: ",self.ymax
+		self.xAxis = abs(self.xmax) + abs(self.xmin)
+		self.yAxis = abs(self.ymax) + abs(self.ymin)
+		padding = 100
+		self.scaleX = (self.width-padding) / self.xAxis
+		self.scaleY = (self.height-padding) / self.yAxis
+
+		if self.xmin < 0:
+			self.lineshift_x = abs(self.xmin)
+		if self.ymin < 0:  
+			self.lineshift_y = abs(self.ymin) 
+		print "scaleX: ",self.scaleX, " scaleY: ",self.scaleY
+		
+
+	
+
+	def plotFitScreenX(self,x):
+		s = (self.lineshift_x + x) * self.scaleX
+		return s + self.padding/2
+
+
+
+	def plotFitScreenY(self,y):
+		s = (self.lineshift_y + y) * self.scaleY
+		return s + (self.padding/2)
 
 
 
 				
-def delegateData(data):
+
+def initiateData(data):
 	initData = data.pop(0)
-	vertex = [] 
-	for d in data:
-		if len(d) == 3:
+	numVertex = int(initData[0])
+	numEdges = int(initData[1])
+	Allvertex = []
+	vertexData = data[:numVertex]
+	edgesData = data[numVertex:] 
+	for d in vertexData:
+		tempVertex = Vertex(int(d[0]),d[1],d[2])
+		Allvertex.append(tempVertex)
+	
+	for d in edgesData:
+		Allvertex[int(d[0])].neighbour.append(Allvertex[int(d[1])])
+		Allvertex[int(d[1])].neighbour.append(Allvertex[int(d[0])])
 
-			tempVertex = Vertex(int(d[0]),d[1],d[2])
-			vertex.append(tempVertex)
-		else:
-			vertex[int(d[0])].neighbour.append(vertex[int(d[1])])
-			vertex[int(d[1])].neighbour.append(vertex[int(d[0])])
-
-
-	return initData, vertex
+	xmin = min(x[1] for x in vertexData)
+	xmax = max(x[1] for x in vertexData)
+	ymin = min(y[2] for y in vertexData)
+	ymax = max(y[2] for y in vertexData)
+	print "Vertexes: " ,numVertex
+	return (numVertex,numEdges), Allvertex,(xmin,xmax,ymin,ymax)
 
 
 
@@ -86,13 +112,12 @@ def readFile(f):
 	data = map(lambda x: x.strip(), open(f,'r'))
 	data = map(lambda x: x.split(),data)
 	data = map(lambda row: map(float, row), data)
-	print data
 	return data
 
 if __name__ == "__main__":
 	f = "graphs/graph_6.txt"
-	init, allvertex = delegateData(readFile(f))
-	gui = Draw(allvertex)
+	init, allvertex,min_max = initiateData(readFile(f))
+	gui = Draw(allvertex,min_max)
 	gui.mainloop()
 
 	
