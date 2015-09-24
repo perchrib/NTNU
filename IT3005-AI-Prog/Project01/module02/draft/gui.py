@@ -6,8 +6,6 @@ class Vertex:
 		self.x = x
 		self.y = y
 		self.neighbour = []
-		self.guiX = None
-		self.guiY = None
 
 class Draw(tk.Tk):
 	def __init__(self,allVertex,min_max):
@@ -22,15 +20,16 @@ class Draw(tk.Tk):
 		self.scaleY = 0
 		self.lineshift_x = 0
 		self.lineshift_y = 0
-		self.width = self.winfo_screenwidth()
+		self.width = self.winfo_screenheight()
 		self.height = self.winfo_screenheight()
 		self.padding = 50
 		self.calculateScaling()
-		r = 10 #radius
+		r = 20 #radius
 		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
-		self.canvas.pack(fill='both',expand='yes')
+		self.canvas.pack()
 		index = 0
+
 
 		for vertex in allVertex:
 			for neighbour in vertex.neighbour:
@@ -49,7 +48,6 @@ class Draw(tk.Tk):
 			index += 1
 
 	def calculateScaling(self):
-		print "xmin: ", self.xmin, " xmax: ",self.xmax, " ymin: ", self.ymin," ymax: ",self.ymax
 		self.xAxis = abs(self.xmax) + abs(self.xmin)
 		self.yAxis = abs(self.ymax) + abs(self.ymin)
 		padding = 100
@@ -60,11 +58,10 @@ class Draw(tk.Tk):
 			self.lineshift_x = abs(self.xmin)
 		if self.ymin < 0:  
 			self.lineshift_y = abs(self.ymin) 
-		print "scaleX: ",self.scaleX, " scaleY: ",self.scaleY
 
 	def plotFitScreenX(self,x):
 		s = (self.lineshift_x + x) * self.scaleX
-		return s + self.padding/2
+		return s + (self.padding/2)
 
 	def plotFitScreenY(self,y):
 		s = (self.lineshift_y + y) * self.scaleY
@@ -83,13 +80,12 @@ def initiateData(data):
 	
 	for d in edgesData:
 		Allvertex[int(d[0])].neighbour.append(Allvertex[int(d[1])])
-		Allvertex[int(d[1])].neighbour.append(Allvertex[int(d[0])])
+		#Allvertex[int(d[1])].neighbour.append(Allvertex[int(d[0])])
 
 	xmin = min(x[1] for x in vertexData)
 	xmax = max(x[1] for x in vertexData)
 	ymin = min(y[2] for y in vertexData)
 	ymax = max(y[2] for y in vertexData)
-	print "Vertexes: " ,numVertex
 	return (numVertex,numEdges), Allvertex,(xmin,xmax,ymin,ymax)
 
 
@@ -100,10 +96,14 @@ def readFile(f):
 	data = map(lambda row: map(float, row), data)
 	return data
 
+
+
 if __name__ == "__main__":
-	f = "graphs/graph_1.txt"
+	f = "graphs/graph_6.txt"
 	init, allvertex,min_max = initiateData(readFile(f))
 	gui = Draw(allvertex,min_max)
+	#print func(a,b,c)
 	gui.mainloop()
+
 
 	

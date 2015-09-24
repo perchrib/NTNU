@@ -1,6 +1,6 @@
 from search_queue import SearchQueue
 from math import sqrt
-import itertools
+#import itertools
 
 
 class A_star():
@@ -22,25 +22,20 @@ class A_star():
 			if not self.openStore:
 				print "Fail"
 				break
-			#print "\n################################\n"
-			#self.openStore.string()
+			
+			
 			currentNode = self.openStore.pop()
 			currentNode.status = 'CLOSED'
 			self.closedStore.add(currentNode)			
 			
 			#print "Current Node State: ",currentNode.state,"   Current Node Heuristic: ", currentNode.h
 
-			if self.gui:
-				self.drawPath(currentNode)
-				self.rase()
-				#if not currentNode.isStart and not currentNode.isFinish:
-					#self.gui.canvas.itemconfig(currentNode.ID, fill="chocolate3")
-				self.gui.after(self.speed,self.gui.update())
 			
 			if currentNode.isFinish:
 				print "Solution found"
 				if self.gui:
-					self.drawPath(currentNode)
+					self.drawPath(currentNode,False)
+					self.gui.after(self.speed,self.gui.update())
 
 				#print "closedStore: ", len(self.closedStore)
 				#print "openStore: " ,len(self.openStore)				
@@ -54,10 +49,10 @@ class A_star():
 					#	self.openStore.add(node)
 				currentNode.kids.append(node)
 				if not node.status == 'OPEN' and not node.status == 'CLOSED':					
-					#if not node.isFinish:
-						#if self.gui:
-							#self.gui.canvas.itemconfig(node.ID, fill="sandy brown")
-							#self.gui.after(self.speed,self.gui.update())
+					if not node.isFinish:
+						if self.gui:
+							self.gui.canvas.itemconfig(node.ID, fill="chocolate3")
+	
 					self.attachAndEval(node,currentNode)
 					node.status = 'OPEN'
 					self.openStore.add(node)
@@ -66,11 +61,19 @@ class A_star():
 					self.attachAndEval(node,currentNode)
 					print"DENNE"
 					if node == 'CLOSED':
-						print "Fitte"
 						improve_path(node)
+			
+			if self.gui:
+				if not currentNode.isStart and not currentNode.isFinish:
+					self.gui.canvas.itemconfig(currentNode.ID, fill="sandy brown")
+				
 
 
-
+				
+				self.drawPath(currentNode,False)
+				self.gui.after(self.speed,self.gui.update())
+				self.drawPath(currentNode,True)
+				
 	
 	def arc_cost(self,currentNode,neighbour):
 		return sqrt(((currentNode.state[0]-neighbour.state[0])**2) + ((currentNode.state[1]-neighbour.state[1])**2)) * self.cost
@@ -95,23 +98,19 @@ class A_star():
 			temp_node = temp_node.parent
 
 		route.reverse()
-		return route[1:-1]
+		return route
 
-	def drawPath(self,node):
+	def drawPath(self,node,rase):
 
 		path = self.findPath(node)
 		self.path = path 
 		for n in path:
-			if not n.isStart or not n.isFinish:
-				self.gui.canvas.itemconfig(n.ID, fill="light blue")
-				self.gui.after(0,self.gui.update())
+			if not (n.isStart or n.isFinish):
+				if rase:
+					self.gui.canvas.itemconfig(n.ID, fill="sandy brown")
+				else:
+					self.gui.canvas.itemconfig(n.ID, fill="light blue")
 
-	def rase(self):
-		if self.path:
-			for n in self.path:
-				if not n.isStart or not n.isFinish:
-					self.gui.canvas.itemconfig(n.ID, fill="mint cream")
-					#self.gui.after(0,self.gui.update())
 
 
 
