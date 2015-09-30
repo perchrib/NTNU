@@ -86,6 +86,17 @@ class CSP:
 
 		return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
 
+	def is_correct(self):
+		for node in self.graph:
+			if not len(node.domain) is 1:
+				return False
+			for neighbour in node.neighbour:
+				if not len(neighbour.domain) is 1:
+					return False
+				if neighbour.domain[0] == node.domain[0]:
+					return False
+		return True
+
 	def run_GAC(self):
 		print "run"
 	
@@ -104,9 +115,9 @@ def main():
 	
 
 	while not csp.isFinish():
-	 	a_star = A_star('astar',graph,csp)
-	 	print "ASTAR STARTED"
-	 	a_star.mainLoop()
+		a_star = A_star('astar',graph,csp)
+		print "ASTAR STARTED"
+		a_star.mainLoop()
 
 
 
@@ -115,6 +126,7 @@ def main():
 		color = v.domain
 		csp.gui.canvas.itemconfig('a'+str(v.index), fill=color)
 
+	print "IS CORRECT: ", csp.is_correct()
 	t_gui.mainloop()
 main()
 

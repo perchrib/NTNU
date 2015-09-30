@@ -81,7 +81,7 @@ class Draw(tk.Tk):
 		self.height = self.winfo_screenheight()
 		self.padding = 50
 		self.calculateScaling()
-		r = 25 #radius
+		r = 5 #radius
 		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.canvas.pack()
@@ -188,7 +188,7 @@ def readFile(f):
 
 
 def getVertexes():#if __name__ == "__main__":
-	f = "graphs/graph_5.txt"
+	f = "graphs/graph_6.txt"
 	init, allvertex,min_max = initiateData(readFile(f))
 	gui = Draw(allvertex,min_max)
 	return allvertex,gui

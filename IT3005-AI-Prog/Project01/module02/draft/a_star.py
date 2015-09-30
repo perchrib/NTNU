@@ -72,7 +72,7 @@ class A_star():
 				# 	if node == 'CLOSED':
 				# 		improve_path(node)
 			
-			
+			self.csp.gui.after(5,self.gui.update())
 			
 	def arc_cost(self,currentNode,neighbour):
 		return self.cost * 1 #sqrt(((currentNode.state[0]-neighbour.state[0])**2) + ((currentNode.state[1]-neighbour.state[1])**2)) * self.cost
@@ -123,7 +123,7 @@ class A_star():
 				color = v.domain
 				self.csp.gui.canvas.itemconfig('a'+str(v.index), fill=color)
 
-		#self.csp.gui.after(500,self.gui.update())
+				
 		
 
 
