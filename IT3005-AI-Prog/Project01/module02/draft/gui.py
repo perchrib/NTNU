@@ -1,4 +1,8 @@
 import Tkinter as tk
+from copy import deepcopy
+#from a_star import A_star
+#from gac import CSP
+#import sys
 
 class Vertex:
 	def __init__(self,index,x,y):
@@ -6,6 +10,59 @@ class Vertex:
 		self.x = x
 		self.y = y
 		self.neighbour = []
+		self.domain = []
+
+	
+
+class Graph:
+	def __init__(self,parent,vertexes):
+
+		self.parent = parent
+		self.kids = []
+		self.graph = vertexes
+		self.g = 0
+		self.f = 0
+		self.status = None
+		self.status = None
+		self.assuptionVertex = None
+
+
+
+	def __lt__(self,other):
+		return self.f < other.f
+
+	def heuristic(self):
+		h = 0
+		for v in self.graph:
+			h += len(v.domain) -1
+
+		return h
+
+	def printGraph(self):
+		string = ""
+		for v in self.graph:
+			if len(v.domain)== 1:
+				string += v.domain[0][0]
+			else:
+				string += "-"
+		print string
+
+
+		# for v in self.graph:
+		# 	if len(v.domain) > 1:
+		# 		return v
+
+	
+
+
+	def isFinish(self):
+		finish = True
+		for v in self.graph:
+			if len(v.domain) != 1:
+				finish = False
+
+		return finish
+
 
 class Draw(tk.Tk):
 	def __init__(self,allVertex,min_max):
@@ -24,7 +81,7 @@ class Draw(tk.Tk):
 		self.height = self.winfo_screenheight()
 		self.padding = 50
 		self.calculateScaling()
-		r = 20 #radius
+		r = 25 #radius
 		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.canvas.pack()
@@ -39,12 +96,12 @@ class Draw(tk.Tk):
 				self.canvas.create_line(self.plotFitScreenX(vertex.x)+m,self.plotFitScreenY(vertex.y)+m,self.plotFitScreenX(nx)+m,self.plotFitScreenY(ny)+m)
 		
 		for vertex in allVertex:
-			color = ['red','blue','green']
+			color = ['white','white','white']
 			tag = vertex.index
 			if index == 3:
 				index = 0
 
-			self.canvas.create_oval(self.plotFitScreenX(vertex.x),self.plotFitScreenY(vertex.y),self.plotFitScreenX(vertex.x)+r,self.plotFitScreenY(vertex.y)+r,fill=color[index],tag=vertex.index)
+			self.canvas.create_oval(self.plotFitScreenX(vertex.x),self.plotFitScreenY(vertex.y),self.plotFitScreenX(vertex.x)+r,self.plotFitScreenY(vertex.y)+r,fill=color[index],tag='a'+ str(vertex.index))
 			index += 1
 
 	def calculateScaling(self):
@@ -80,7 +137,7 @@ def initiateData(data):
 	
 	for d in edgesData:
 		Allvertex[int(d[0])].neighbour.append(Allvertex[int(d[1])])
-		#Allvertex[int(d[1])].neighbour.append(Allvertex[int(d[0])])
+		Allvertex[int(d[1])].neighbour.append(Allvertex[int(d[0])])
 
 	xmin = min(x[1] for x in vertexData)
 	xmax = max(x[1] for x in vertexData)
@@ -94,16 +151,48 @@ def readFile(f):
 	data = map(lambda x: x.strip(), open(f,'r'))
 	data = map(lambda x: x.split(),data)
 	data = map(lambda row: map(float, row), data)
+
 	return data
 
 
 
-if __name__ == "__main__":
-	f = "graphs/graph_6.txt"
+# if __name__ == "__main__":
+# 	sys.setrecursionlimit(5000)
+# 	f = "graphs/graph_1.txt"
+# 	init, allvertex,min_max = initiateData(readFile(f))
+# 	gui = Draw(allvertex,min_max)
+
+	
+# 	graph = Graph(None,allvertex)
+# 	for vertex in graph.graph:
+# 		vertex.domain = ['Green','Red','Blue','Yellow']
+# 	csp = CSP(graph,gui)
+# 	csp.initialice(graph.graph)
+# 	#csp.graph[0].domain = [csp.graph[0].domain[0]]
+# 	print "################################## yo"
+	
+
+# 	while not csp.isFinish():
+# 	 	a_star = A_star('astar',graph,csp)
+# 	 	print "ASTAR STARTED"
+# 	 	a_star.mainLoop()
+
+
+
+# 	for v in csp.graph:
+# 		print v.domain
+# 		color = v.domain
+# 		csp.gui.canvas.itemconfig(v.index, fill=color)
+
+# 	gui.mainloop()
+
+
+def getVertexes():#if __name__ == "__main__":
+	f = "graphs/graph_5.txt"
 	init, allvertex,min_max = initiateData(readFile(f))
 	gui = Draw(allvertex,min_max)
-	#print func(a,b,c)
-	gui.mainloop()
+	return allvertex,gui
+	#gui.mainloop()
 
 
 	
