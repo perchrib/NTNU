@@ -81,7 +81,7 @@ class Draw(tk.Tk):
 		self.height = self.winfo_screenheight()
 		self.padding = 50
 		self.calculateScaling()
-		r = 5 #radius
+		r = 20 #radius
 		
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.canvas.pack()

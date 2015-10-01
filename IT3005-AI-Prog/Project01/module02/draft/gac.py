@@ -107,7 +107,7 @@ def main():
 	sys.setrecursionlimit(5000)
 	graph = gui.Graph(None,allVertexes)
 	for vertex in graph.graph:
-		vertex.domain = ['Green','Red','Blue','Yellow']
+		vertex.domain = ['Green','Red','Blue','Yellow']#,'Black']#,'Brown']
 	csp = CSP(graph,t_gui)
 	csp.initialice(graph.graph)
 	#csp.graph[0].domain = [csp.graph[0].domain[0]]
