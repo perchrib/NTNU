@@ -37,8 +37,8 @@ class A_star():
 					self.drawPath(currentNode,False)
 					self.gui.after(self.speed,self.gui.update())
 
-				#print "closedStore: ", len(self.closedStore)
-				#print "openStore: " ,len(self.openStore)				
+				print "closedStore: ", len(self.closedStore)
+				print "openStore: " ,len(self.openStore)				
 				break
 
 			currentNode.generateNeighbours()

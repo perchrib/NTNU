@@ -56,7 +56,8 @@ class Node:
 		self.kids = []
 		self.g = 0
 		self.f = 0
-		self.h = sqrt(((self.state[0]-board.finish[1])**2) + ((self.state[1]-board.finish[0])**2))
+		self.h = abs(self.state[0]-board.finish[1]) + abs(self.state[1]-board.finish[0])
+		#self.h = sqrt(((self.state[0]-board.finish[1])**2) + ((self.state[1]-board.finish[0])**2))
 		self.neighbours = []
 		self.isObstacle = False
 		self.isStart = False
