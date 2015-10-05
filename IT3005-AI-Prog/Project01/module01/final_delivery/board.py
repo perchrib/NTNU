@@ -15,7 +15,7 @@ case = [[(10,10),(0,0),(9,9),(2,3,5,5),(8,8,2,1)],
 
 
 
-
+"""Represent the board with obstacles and nodes, each node represent one square on the board"""
 class Board:
 	def __init__(self, dim, start, finish):
 		self.dim = dim
@@ -45,9 +45,6 @@ class Board:
 class Node:
 
 	generateID = 0
-		
-		#sqrt(((self.state[0]-Node.finishPoint[0])**2) + (self.state[1]-Node.finishPoint[1]))
-	
 	def __init__(self,state,board):
 		self.state = state
 		self.board = board
@@ -56,7 +53,9 @@ class Node:
 		self.kids = []
 		self.g = 0
 		self.f = 0
+		##Manhatten
 		self.h = abs(self.state[0]-board.finish[1]) + abs(self.state[1]-board.finish[0])
+		##Euclid
 		#self.h = sqrt(((self.state[0]-board.finish[1])**2) + ((self.state[1]-board.finish[0])**2))
 		self.neighbours = []
 		self.isObstacle = False
@@ -76,11 +75,9 @@ class Node:
 
 	def generateNeighbours(self):
 		if not self.neighbours:
-			#dx = [1,0,-1,0]
-			#dy = [0,1,0,-1]
 			dx = [0,-1,1,0]
 			dy = [1,0,0,-1]
-
+			
 			for i in range(4):
 				stepX = dx[i] + self.state[0]
 				stepY = dy[i] + self.state[1]
@@ -91,8 +88,6 @@ class Node:
 						self.neighbours.append(neighbour)
 		elif self.neighbours:
 			print "Already GENERATED!"
-
-						
 
 def addObstacles(board, allObstacles):
 	numOfObstacles = len(allObstacles)
@@ -105,7 +100,7 @@ def addObstacles(board, allObstacles):
 			for obsLength in range(length):
 				board.board[y-obsHeight][x + obsLength].isObstacle = True
 
-
+"""GUI represenation"""
 class Draw(tk.Tk):
 	def __init__(self,board):
 		tk.Tk.__init__(self)
@@ -138,11 +133,7 @@ class Draw(tk.Tk):
 				elif node.isObstacle:
 					#self.canvas.create_rectangle(gridx+2,gridy + 2, gridx+i, gridy+i, fill="grey",tags=tag)
 					self.canvas.create_rectangle(gridx,gridy, gridx2, gridy2, fill="grey",tags=tag)
-				
-		
-
-	
-
+"""The main func who starts  the A star"""
 def main():
 	isScenario = raw_input("Scenarios? y=>YES or ENTER=> NO : ")
 	if isScenario:

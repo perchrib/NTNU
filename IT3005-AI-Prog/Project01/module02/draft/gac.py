@@ -24,7 +24,7 @@ class CSP:
 
 		return finish
 
-
+	"""Gac initialaze, start filtering if possible"""
 	def initialice(self,vertexes):
 		combinations = []
 		for v in vertexes:
@@ -32,53 +32,43 @@ class CSP:
 				combinations.append((v,n))
 
 		return self.ac_3(combinations)
-	
+	"""Gac rerun, called when a star is used"""
 	def rerun(self,vertex):
 		combinations = []
 		for n in vertex.neighbour:
 			combinations.append((n,vertex))
 		return self.ac_3(combinations)
 
-
-
+	"""The domain filtering loop, filter all domains that does not satisfy the constraints """
 	def ac_3(self,queue):
-		#self.generate_permutations(self.graph)
 		queue = queue
 		while queue:
 			xi,xj = queue.pop(0)
-			#print "XI: " , xi.index, " XJ: ",xj.index, " Length: ", len(queue) 
 			if self.revise(xi,xj):
 				if len(xi.domain) == 0:
 					return False
 				for xn in xi.neighbour:
-					#print "ADDED"
 					queue.append((xn,xi))
-				#for i,j in queue:
-				#	print i.index,j.index
-
 		return True
 
-	
+	"""Revise function actually delete domains that not satisfy the constraints, return true if 
+	it removes a domain, othervise False"""
 	def revise(self,xi,xj):
 		
 		revised = False
-		
-		
-		#print "DOMAIN xi: ", xi.domain, " DOMAIN xj: " , xj.domain
+
 		for x in xi.domain:
 			no_valid = True
 			for y in xj.domain:
 				b = self.constraint(x,y)
-				#print "X:", x, "Y:",y,"Func:",b
 				if self.constraint(x,y):
 					no_valid = False
 			if no_valid:
-				#print "DELETED: ", x
 				xi.domain.remove(x)
 				revised = True
 
 		return revised
-
+	"""Make func, creates chunks of code depending on input"""
 	def makefunc(self,var_names,expression,envir=globals()):
 		args = ""
 		for n in var_names:
@@ -86,6 +76,7 @@ class CSP:
 
 		return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
 
+	"""Checks if the solution is correct"""
 	def is_correct(self):
 		for node in self.graph:
 			if not len(node.domain) is 1:
@@ -96,30 +87,21 @@ class CSP:
 				if neighbour.domain[0] == node.domain[0]:
 					return False
 		return True
-
-	def run_GAC(self):
-		print "run"
-	
-
+"""MAIN, Start everything from here"""
 def main():
-	#domain = ['Green','Red']
+
 	allVertexes,t_gui = gui.getVertexes() 
 	sys.setrecursionlimit(5000)
+	k = int(sys.argv[2])
 	graph = gui.Graph(None,allVertexes)
 	for vertex in graph.graph:
-		vertex.domain = ['Green','Red','Blue','Yellow']#,'Black']#,'Brown']
+		vertex.domain = ['Green','Red','Blue','Yellow','Black','Brown','Pink', 'Cyan','Magenta','Orange'][:k]
 	csp = CSP(graph,t_gui)
 	csp.initialice(graph.graph)
-	#csp.graph[0].domain = [csp.graph[0].domain[0]]
-	print "################################## yo"
-	
-
 	while not csp.isFinish():
 		a_star = A_star('astar',graph,csp)
 		print "ASTAR STARTED"
 		a_star.mainLoop()
-
-
 
 	for v in csp.graph:
 		print v.domain

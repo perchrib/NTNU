@@ -1,6 +1,6 @@
 from search_queue import SearchQueue
 from math import sqrt
-#import itertools
+
 
 
 class A_star():
@@ -11,26 +11,19 @@ class A_star():
 		self.board = board
 		self.openStore = SearchQueue(searchMethod)
 		self.closedStore = SearchQueue(searchMethod)
-
 		self.board.startNode.f = self.board.startNode.g + self.board.startNode.h
-		#print "finishNode", board.finishNode.state , "is Finish: ", board.finishNode.isFinish
 		self.openStore.add(board.startNode)
 		self.path = []
-		
+	
+	"""The main loop of Astar"""
 	def mainLoop(self):
 		while self.openStore:
 			if not self.openStore:
 				print "Fail"
-				break
-			
-			
+				break	
 			currentNode = self.openStore.pop()
 			currentNode.status = 'CLOSED'
 			self.closedStore.add(currentNode)			
-			
-			#print "Current Node State: ",currentNode.state,"   Current Node Heuristic: ", currentNode.h
-
-			
 			if currentNode.isFinish:
 				print "Solution found"
 				if self.gui:
@@ -38,15 +31,12 @@ class A_star():
 					self.gui.after(self.speed,self.gui.update())
 
 				print "closedStore: ", len(self.closedStore)
-				print "openStore: " ,len(self.openStore)				
+				print "openStore: " ,len(self.openStore)
+				print "Length Of Solution Path: " , len(self.path)			
 				break
 
 			currentNode.generateNeighbours()
 			for node in currentNode.neighbours:
-				#if not node in self.openStore:
-					#if not node in self.openStore or not node in self.closedStore :
-					#	node.status = 'OPEN'
-					#	self.openStore.add(node)
 				currentNode.kids.append(node)
 				if not node.status == 'OPEN' and not node.status == 'CLOSED':					
 					if not node.isFinish:
@@ -66,30 +56,28 @@ class A_star():
 			if self.gui:
 				if not currentNode.isStart and not currentNode.isFinish:
 					self.gui.canvas.itemconfig(currentNode.ID, fill="sandy brown")
-				
 
-
-				
 				self.drawPath(currentNode,False)
 				self.gui.after(self.speed,self.gui.update())
 				self.drawPath(currentNode,True)
 				
-	
+	"""Calculate the cost of one move"""
 	def arc_cost(self,currentNode,neighbour):
 		return sqrt(((currentNode.state[0]-neighbour.state[0])**2) + ((currentNode.state[1]-neighbour.state[1])**2)) * self.cost
 
-
+	"""set the cost of current stage and update the total cost of current move """
 	def attachAndEval(self,node,currentNode):
 		node.parent = currentNode
 		node.g = currentNode.g + self.arc_cost(currentNode,node)
 		node.f = node.g + node.h
-
+	
 	def improve_path(currentNode):
 		for kid in currentNode.kids:
 			kid.parent = currentNode
 			kid.g = currentNode.g + self.arc_cost(currentNode,kid)
 			kid.f = kid.c + kid.h
 
+	"""Finds the current path"""
 	def findPath(self, node):
 		route = []
 		temp_node = node
@@ -110,17 +98,3 @@ class A_star():
 					self.gui.canvas.itemconfig(n.ID, fill="sandy brown")
 				else:
 					self.gui.canvas.itemconfig(n.ID, fill="light blue")
-
-
-
-
-
-
-
-
-					
-					
-
-
-
-

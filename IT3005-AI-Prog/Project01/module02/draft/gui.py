@@ -1,9 +1,7 @@
 import Tkinter as tk
 from copy import deepcopy
-#from a_star import A_star
-#from gac import CSP
-#import sys
-
+import sys
+"""This class represent the vartexes in the graph"""
 class Vertex:
 	def __init__(self,index,x,y):
 		self.index = index
@@ -13,7 +11,7 @@ class Vertex:
 		self.domain = []
 
 	
-
+"""This class represnt the current state on the graph, used by astar, current state"""
 class Graph:
 	def __init__(self,parent,vertexes):
 
@@ -30,11 +28,11 @@ class Graph:
 
 	def __lt__(self,other):
 		return self.f < other.f
-
+	"""Heuristic depending on how many domains that is left, counts every domain greater than ONE"""
 	def heuristic(self):
 		h = 0
 		for v in self.graph:
-			h += len(v.domain) -1
+			h += len(v.domain) - 1
 
 		return h
 
@@ -46,14 +44,6 @@ class Graph:
 			else:
 				string += "-"
 		print string
-
-
-		# for v in self.graph:
-		# 	if len(v.domain) > 1:
-		# 		return v
-
-	
-
 
 	def isFinish(self):
 		finish = True
@@ -155,44 +145,13 @@ def readFile(f):
 	return data
 
 
-
-# if __name__ == "__main__":
-# 	sys.setrecursionlimit(5000)
-# 	f = "graphs/graph_1.txt"
-# 	init, allvertex,min_max = initiateData(readFile(f))
-# 	gui = Draw(allvertex,min_max)
-
-	
-# 	graph = Graph(None,allvertex)
-# 	for vertex in graph.graph:
-# 		vertex.domain = ['Green','Red','Blue','Yellow']
-# 	csp = CSP(graph,gui)
-# 	csp.initialice(graph.graph)
-# 	#csp.graph[0].domain = [csp.graph[0].domain[0]]
-# 	print "################################## yo"
-	
-
-# 	while not csp.isFinish():
-# 	 	a_star = A_star('astar',graph,csp)
-# 	 	print "ASTAR STARTED"
-# 	 	a_star.mainLoop()
-
-
-
-# 	for v in csp.graph:
-# 		print v.domain
-# 		color = v.domain
-# 		csp.gui.canvas.itemconfig(v.index, fill=color)
-
-# 	gui.mainloop()
-
-
-def getVertexes():#if __name__ == "__main__":
-	f = "graphs/graph_6.txt"
+def getVertexes():
+	case = sys.argv[1]
+	f = "graphs/graph_" + case + ".txt"
 	init, allvertex,min_max = initiateData(readFile(f))
 	gui = Draw(allvertex,min_max)
 	return allvertex,gui
-	#gui.mainloop()
+	
 
 
 	

@@ -23,17 +23,9 @@ class SearchQueue():
 
 	def __iter__(self):
 		return iter(self.storage)
-
-
-
-
 	def string(self):
 		for x in self.storage:
 			print "F(h): ", x.f ,  "State: " , x.state, "h(): ", x.h
-			 
-
-
-
 	def add(self,element):
 		if self.astar:
 			heappush(self.storage,element)
@@ -46,7 +38,6 @@ class SearchQueue():
 	def pop(self):
 		if self.astar:
 			element = heappop(self.storage)
-			#print "CurrentNode State", element.state, "CurrentNode: ", element.f
 		elif self.bfs:
 			element = self.storage.pop(0)
 

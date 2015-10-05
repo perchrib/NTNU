@@ -16,62 +16,38 @@ class A_star():
 		self.csp = csp
 		self.generator = []
 		self.gui = csp.gui
-		
+	
+	"""This is the main Loop of ASTAR"""
 	def mainLoop(self):
 		while self.openStore:
 			if not self.openStore:
-				#print "Fail"
+				print "Fail"
 				break
-			
-			#print "QUEUE: ", self.openStore.string()	
+	
 			currentNode = self.openStore.pop()
 			currentNode.status = 'CLOSED'
 			self.closedStore.add(currentNode)
-			#print "Current Node State: ",currentNode.state,"   Current Node Heuristic: ", currentNode.h
 
 			self.draw_graph(currentNode)
 
 			neighbours = self.generateNeighbours(currentNode)
 			currentNode.printGraph()
-			for node in neighbours:				
-				#print "INDEX: ", node.assuptionVertex.index		
+			for node in neighbours:	
+				"""Calling on gac rerun to filter domains"""			
 				revise = self.csp.rerun(node.assuptionVertex)
 				self.csp.graph = node.graph 
-				#print "Revise: ", revise
 
-				#if not node in self.openStore:
-					#if not node in self.openStore or not node in self.closedStore :
-					#	node.status = 'OPEN'
-					#	self.openStore.add(node)
 				if not revise:
 					self.closedStore.add(node)
 					continue
 		
 				if self.csp.isFinish():
-					# halla
-					#print "Solution found"
-
-					#print "closedStore: ", len(self.closedStore)
-					#print "openStore: " ,len(self.openStore)				
+					print "OPEN ", len(self.openStore)
+					print "CLOSED ", len(self.closedStore)
+				
 					return 
 				node.f = node.heuristic()
-
-				#print "LENGTH: " ,len(self.openStore)
-				self.openStore.add(node) 
-
-				# currentNode.kids.append(node)
-				# if not node.status == 'OPEN' and not node.status == 'CLOSED':					
-	
-				# 	self.attachAndEval(node,currentNode)
-				# 	node.status = 'OPEN'
-				# 	self.openStore.add(node)
-
-				# elif currentNode.g + self.arc_cost(currentNode,node) < node.g:
-				# 	self.attachAndEval(node,currentNode)
-				# 	print"DENNE"
-				# 	if node == 'CLOSED':
-				# 		improve_path(node)
-			
+				self.openStore.add(node) 			
 			self.csp.gui.after(5,self.gui.update())
 			
 	def arc_cost(self,currentNode,neighbour):
@@ -88,7 +64,9 @@ class A_star():
 			kid.parent = currentNode
 			kid.g = currentNode.g + self.arc_cost(currentNode,kid)
 			kid.f = kid.c + kid.heuristic()
-
+	"""Genereate other neighbour state, try to set the variable with more than one in its domain,
+	trying out every domain once. return all combination with one domain. setting also the variable as an 
+	assuption-Variable that will run in gac rerun"""
 	def generateNeighbours(self,original):
 		neighbours = []
 		temp_node = self.find_first_expandable(original)
@@ -100,6 +78,7 @@ class A_star():
 				neighbours.append(successor)
 		return neighbours
 
+	"""Finds the first domain with more than one and return that variable othervise None """
 	def find_first_expandable(self,node):
 		for v in node.graph:
 			if v.domain:
@@ -107,18 +86,8 @@ class A_star():
 					return v
 		return None
 
-		# t = 100
-		# minVertex = None
-		# for v in node.graph:
-		# 	minT = len(v.neighbour)
-		# 	if minT < t and len(v.domain) > 1:
-		# 		t = len(v.neighbour)
-		# 		minVertex = v 
-		#print "MINIMUM: ", minVertex.index
-		#return minVertex
 	def draw_graph(self,currentNode):
 		for v in self.csp.graph:
-		#print v.domain
 			if len(v.domain) == 1:
 				color = v.domain
 				self.csp.gui.canvas.itemconfig('a'+str(v.index), fill=color)
