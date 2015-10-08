@@ -126,7 +126,7 @@ def setColor(route):
 		return 'black'
 
 def getVariables():
-	f = "nanograms/scenario_7.txt"
+	f = "nanograms/nono5.txt"
 	data,num_of_row,num_of_col = initiateData(readFile(f))
 	sort = collections.OrderedDict(sorted(data.items()))
 	rows = []

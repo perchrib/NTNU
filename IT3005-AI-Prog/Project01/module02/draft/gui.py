@@ -147,7 +147,7 @@ def readFile(f):
 
 def getVertexes():
 	case = sys.argv[1]
-	f = "graphs/graph_" + case + ".txt"
+	f = "graphs/gcolor" + case + ".txt"
 	init, allvertex,min_max = initiateData(readFile(f))
 	gui = Draw(allvertex,min_max)
 	return allvertex,gui
