@@ -1,10 +1,8 @@
 import random
-
-
-class Tile:
-	def __init__(self):
+class Tile():
+	def __init__(self,value):
+		self.value = value
 		self.pos = None
-		self.value = None
 		self.color = None
 
 
@@ -18,24 +16,4 @@ class Tile:
 		return prob
 
 	def get_color(self):
-
-
-	def set_color(self):
-		colors = {}
-class Board:
-	def __init__(self,dimension):
-		self.domension = dimension
-		self.board = [[None for x in range(dimension)] for y in range(dimension)]
-
-	def
-
-
-b = Board(4)
-for x in b.board:
-	print x
-t = None
-while t != 0:
-	tile = Tile()
-	t = tile.set_start_value()
-	print "Prob ", t, " value: ", tile.value
-
+		return self.color
