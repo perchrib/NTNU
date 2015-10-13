@@ -6,7 +6,6 @@ directions = {1:'UP',
 			  2:'DOWN',
 			  3:'LEFT',
 			  4:'RIGHT'}
-
 EMPTY = 0
 UP = 1
 DOWN = 2
@@ -63,21 +62,3 @@ class Board:
 					continue
 				else:
 					self.board[x][y].pos = str(x)+"-"+ str(y) 
-# b = Board(4)
-# for x in range(len(b.board)):
-# 	for y in range(len(b.board)):
-# 		r = random.randint(0,2)
-# 		if y == 0:
-# 			t = Tile(2)
-# 			b.board[x][y] = t
-# 		elif r == 0: 
-# 			t = Tile(2)
-# 			b.board[x][y] = t
-
-
-# b.print_board() 
-# print "\n"
-# print directions[LEFT]
-# b.move(DOWN)
-# b.print_board()
-

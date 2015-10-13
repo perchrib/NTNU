@@ -14,6 +14,3 @@ class Tile():
 			self.value = 4
 
 		return prob
-
-	def get_color(self):
-		return self.color

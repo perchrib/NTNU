@@ -42,20 +42,24 @@ class Draw(tk.Tk):
 			self.board.move(LEFT)
 		elif event.keysym == 'Right':
 			self.board.move(RIGHT)
-		self.board.print_board()
+		self.update_board()
+		#self.board.print_board()
 		new_tile = Tile(None)
 		new_tile.set_start_value()
 		self.board.set_new_tile(new_tile)
-		self.update_board(5)
+		self.update_tile(new_tile,250)
+		self.board.print_board()
+		
 
-	# def update_tile(self,tile,delay):
-	# 	print "TILE : ", tile.pos
-	# 	color = self.getColor(tile.value)
-	# 	self.canvas.itemconfig('c'+tile.pos,fill=color)
-	# 	self.canvas.itemconfig('i'+tile.pos,text=str(tile.value))
-	# 	self.after(delay,self.update())
+	def update_tile(self,tile,delay):
+		print "TILE : ", tile.pos
+		tile.color = self.getColor(tile.value)
+		self.after(delay)
+		self.canvas.itemconfig('c'+tile.pos,fill=tile.color)
+		self.canvas.itemconfig('i'+tile.pos,text=str(tile.value))
+		self.after(5,self.update())
 
-	def update_board(self,delay):
+	def update_board(self):
 		self.board.update_tile_pos()
 		for x in range(self.dimension):
 			for y in range(self.dimension):
@@ -65,17 +69,16 @@ class Draw(tk.Tk):
 				else:
 					"""i INTEGER, c COLOR"""
 					tile = self.board.board[x][y]
-					color = self.getColor(tile.value)
-					self.canvas.itemconfig('c'+tile.pos,fill=color)
+					tile.color = self.getColor(tile.value)
+					self.canvas.itemconfig('c'+tile.pos,fill=tile.color)
 					self.canvas.itemconfig('i'+tile.pos,text=str(tile.value))
-			self.after(delay,self.update())
+		self.after(5,self.update())
 
 	def log_2(self,number):
 		if number == 1:
 			return 0
 		else:
 			return self.log_2(number/2) + 1
-
 
 	def getColor(self,tile_num):
 		key = self.log_2(tile_num)
@@ -90,11 +93,5 @@ class Draw(tk.Tk):
 				  9:'#edc850',
 				  10:'#edc53f',
 				  11:'#edc22e',
-				  12:'#3c3a32'}#,13:,14:,15:,}
+				  12:'#3c3a32'}
 		return colors[key]
-
-# def main():
-# 	gui = Draw(4,"dumm")
-	
-# 	gui.mainloop()
-# main()

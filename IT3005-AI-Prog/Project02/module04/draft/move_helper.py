@@ -80,9 +80,3 @@ def merge_serie(array,move):
 		array.reverse()
 		return array
 	return array
-
-
-
-
-
-
