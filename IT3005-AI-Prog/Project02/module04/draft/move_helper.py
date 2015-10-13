@@ -9,6 +9,8 @@ RIGHT = 4
 """Main func for moving tiles to one side, arg[0] matrix, arg[1], UP,DOWN,LEFT,RIGHT
 Only call this function when import from another .py file"""
 def move(matrix,move):
+	global TILE_MOVED
+	TILE_MOVED = False
 	transposed = False
 	if move == UP or move == DOWN:
 		transposed = True
@@ -44,8 +46,8 @@ def move_to_one_side(matrix,move):
 		if move == RIGHT or move == DOWN:
 			new_matrix.append(temp + copy_matrix[i])
 		elif move == LEFT or move == UP:
-			new_matrix.append(copy_matrix[i] + temp)	
-		
+			new_matrix.append(copy_matrix[i] + temp)
+		check_if_tile_was_moved(new_matrix[i],matrix[i])
 	return new_matrix
 """Merge the matrix if possible (Valid Moves)"""	
 def merge_matrix(matrix, move):
@@ -71,6 +73,8 @@ def merge_serie(array,move):
 					temp_tile = Tile(t1*2)
 					array[i] = temp_tile
 					array[i+j] = EMPTY
+					global TILE_MOVED
+					TILE_MOVED = True
 					i += 2
 				else:
 					i += 1
@@ -80,3 +84,15 @@ def merge_serie(array,move):
 		array.reverse()
 		return array
 	return array
+"""Help func for valid move"""
+def check_if_tile_was_moved(l1,l2):
+	global TILE_MOVED
+	for i in range(len(l1)):
+		if l1[i] == EMPTY and l2[i] != EMPTY:
+			TILE_MOVED = True
+		elif l1[i] != EMPTY and l2[i] == EMPTY:
+			TILE_MOVED = True
+"""Return boolean if it possible to move that given direction"""
+def valid_move():
+	global TILE_MOVED
+	return TILE_MOVED

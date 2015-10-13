@@ -34,6 +34,7 @@ class Draw(tk.Tk):
 				self.canvas.create_text(gx2,gy2,text="",font=("Helvetica",70),tags=inttag)
 
 	def key_pressed(self,event):
+
 		if event.keysym == 'Up':
 			self.board.move(UP)
 		elif event.keysym == 'Down':
@@ -42,17 +43,19 @@ class Draw(tk.Tk):
 			self.board.move(LEFT)
 		elif event.keysym == 'Right':
 			self.board.move(RIGHT)
-		self.update_board()
-		#self.board.print_board()
-		new_tile = Tile(None)
-		new_tile.set_start_value()
-		self.board.set_new_tile(new_tile)
-		self.update_tile(new_tile,250)
-		self.board.print_board()
-		
+		if self.board.valid_move:
+			self.update_board()
+			new_tile = Tile(None)
+			new_tile.set_start_value()
+			self.board.set_new_tile(new_tile)
+			self.update_tile(new_tile,250)
+			self.board.print_board()
+		elif self.board.has_lost():
+			print "You have lost "
+		elif self.board.valid_move == False:
+			print "Try anothe direction!"
 
 	def update_tile(self,tile,delay):
-		print "TILE : ", tile.pos
 		tile.color = self.getColor(tile.value)
 		self.after(delay)
 		self.canvas.itemconfig('c'+tile.pos,fill=tile.color)

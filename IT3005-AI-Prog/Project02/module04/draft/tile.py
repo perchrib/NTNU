@@ -4,8 +4,7 @@ class Tile():
 		self.value = value
 		self.pos = None
 		self.color = None
-
-
+		
 	def set_start_value(self):
 		prob = random.randint(0,9)
 		if prob > 0:
