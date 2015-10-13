@@ -3,15 +3,12 @@ from move_helper import move as MOVE
 from move_helper import valid_move
 from tile import Tile
 
-directions = {1:'UP',
-			  2:'DOWN',
-			  3:'LEFT',
-			  4:'RIGHT'}
 EMPTY = 0
 UP = 1
 DOWN = 2
 LEFT = 3
 RIGHT = 4
+MOVES = [UP,DOWN,LEFT,RIGHT]
 class Board:
 	def __init__(self,dimension):
 		self.dimension = dimension
@@ -39,6 +36,7 @@ class Board:
 	def move(self,move):
 		self.board = MOVE(self.board,move)
 		self.valid_move = valid_move()
+		print "VALLID: ",self.valid_move
 
 	def print_board(self):
 		print "--------------------------"
@@ -59,11 +57,13 @@ class Board:
 		for row in self.board:
 			for tile in row:
 				if tile == EMPTY:
-					full_board = False
-					break
-		if full_board and self.valid_move == False:
-			return True
-		return False
+					return False
+		valid = True
+		for move in MOVES:
+			temp = MOVE(self.board,move)
+			if valid_move():
+				return False
+		return True
 		
 	def update_tile_pos(self):
 		for x in range(self.dimension):

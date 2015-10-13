@@ -3,12 +3,8 @@ from board import Board
 from gui import Draw
 DIM = 4
 def main():
-	board = Board(DIM)
-	gui = Draw(DIM,board)
-	tile = Tile(None)
-	tile.set_start_value()
-	board.set_new_tile(tile)
-	board.all_moves.append(board.board)
+	#board = Board(DIM)
+	gui = Draw(DIM)
 	gui.mainloop()
 
 main()
