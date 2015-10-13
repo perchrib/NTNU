@@ -17,6 +17,7 @@ class Board:
 		self.dimension = dimension
 		self.board = [[EMPTY for x in range(dimension)] for y in range(dimension)]
 		self.valid_move = None
+		self.all_moves = []
 	"""INTERNAL FUNC called by set_new_tile"""
 	def get_ready_places(self):
 		indexes = []
@@ -60,7 +61,6 @@ class Board:
 				if tile == EMPTY:
 					full_board = False
 					break
-			break
 		if full_board and self.valid_move == False:
 			return True
 		return False

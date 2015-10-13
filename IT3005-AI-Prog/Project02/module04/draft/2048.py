@@ -8,7 +8,7 @@ def main():
 	tile = Tile(None)
 	tile.set_start_value()
 	board.set_new_tile(tile)
-	gui.update_board()
+	board.all_moves.append(board.board)
 	gui.mainloop()
 
 main()
