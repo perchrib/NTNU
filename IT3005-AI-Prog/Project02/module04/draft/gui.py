@@ -82,6 +82,7 @@ class Draw(tk.Tk):
 		self.update_board()
 	def ai(self,event):
 		print "AI"
+		self.game_ended()
 		#self.update_board()
 	def undo(self,event):
 		if len(self.board.all_moves) > 0:
