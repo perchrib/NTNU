@@ -1,6 +1,7 @@
 import Tkinter as tk
 from tile import Tile
 from board import Board
+from minimax import Minimax
 EMPTY = 0
 UP = 1
 DOWN = 2
@@ -82,7 +83,24 @@ class Draw(tk.Tk):
 		self.update_board()
 	def ai(self,event):
 		print "AI"
-		self.game_ended()
+		# self.new_game()
+		# ai = Minimax()
+		# while not self.board.has_lost():
+		# 	ai.state = self.board
+		# 	move = ai.get_move()
+		# 	self.board.move(move)
+		# 	if self.board.valid_move:
+		# 		new_tile = Tile(None)
+		# 		new_tile.set_start_value()
+		# 		self.board.set_new_tile(new_tile)
+		# 		self.update_board()
+		# 	else:
+		# 		continue
+
+
+
+
+		#self.game_ended()
 		#self.update_board()
 	def undo(self,event):
 		if len(self.board.all_moves) > 0:
@@ -136,7 +154,6 @@ class Draw(tk.Tk):
 		tile.set_start_value()
 		self.board.set_new_tile(tile)
 		self.board.all_moves.append(self.board.board)
-		self.update_board()
 
 	def log_2(self,number):
 		if number == 1:

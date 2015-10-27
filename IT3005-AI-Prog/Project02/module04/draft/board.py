@@ -49,7 +49,6 @@ class Board:
 
 				if i == self.dimension-1:
 					print " | "
-
 			print "--------------------------"
 
 	def has_lost(self):
@@ -58,7 +57,6 @@ class Board:
 			for tile in row:
 				if tile == EMPTY:
 					return False
-		valid = True
 		for move in MOVES:
 			temp = MOVE(self.board,move)
 			if valid_move():
