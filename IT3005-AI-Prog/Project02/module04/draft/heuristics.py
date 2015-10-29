@@ -28,7 +28,7 @@ zero_filter = [[10,8,7,6.5],
 # 				[1,2,3,4]]
 
 """Use the filter to accomplish the snake format"""
-def corner(board):
+def snake(board):
 	return dot(board, zero_filter) #+ free_cells(board)**2
 
 def dot(node1, node2):

@@ -21,7 +21,7 @@ class Minimax:
 
 	def minimax(self,node,depth,my_turn):
 		if depth == 0:
-			return heuristics.corner(node.board) #+ heuristics.top_row(node.board)
+			return heuristics.snake(node.board) #+ heuristics.free_cells(node.board)#+ heuristics.top_row(node.board)
 		if my_turn:
 			alpha = float('-inf')
 			children = self.generate_children(node)
