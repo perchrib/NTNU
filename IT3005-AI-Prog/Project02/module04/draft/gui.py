@@ -21,12 +21,12 @@ class Draw(tk.Tk):
 		self.topframe = tk.Frame(self)
 		self.canvas = tk.Canvas(self, width= self.width,height=self.height)
 		self.play_button = tk.Button(self.topframe, text="PLAY",width=10,height=5)
-		self.ai_button = tk.Button(self.topframe, text="AI-SOLVER",width=10,height=5)
 		self.undo_button = tk.Button(self.topframe, text="UNDO",width=10,height=5)
+		self.ai_button = tk.Button(self.topframe, text="AI-SOLVER",width=10,height=5)
 		"""PACK"""
 		self.topframe.pack(side='top') 
-		self.undo_button.pack(padx=2,side='right')
 		self.ai_button.pack(padx=2,side='right')
+		self.undo_button.pack(padx=2,side='right')
 		self.play_button.pack(padx=2,side='right')
 		self.canvas.pack()
 		"""LISTENERS"""
@@ -37,7 +37,7 @@ class Draw(tk.Tk):
 		for x in range(self.dimension):
 			for y in range(self.dimension):
 				gridx = node_size*y+3
-				gridy = node_size*x+3 #3 Standard
+				gridy = node_size*x+3 
 				gridx2 = gridx + node_size -2
 				gridy2 = gridy + node_size -2
 				gx2 = gridx + (node_size -2)/2
@@ -66,7 +66,7 @@ class Draw(tk.Tk):
 			new_tile.set_start_value()
 			self.board.set_new_tile(new_tile)
 			self.update_tile(new_tile,250)
-			self.board.print_board()
+			#self.board.print_board()
 		elif self.board.has_lost():
 			print "You have lost "
 			self.game_ended()		
@@ -83,23 +83,20 @@ class Draw(tk.Tk):
 		self.update_board()
 	def ai(self,event):
 		print "AI"
-		# self.new_game()
-		# ai = Minimax()
-		# while not self.board.has_lost():
-		# 	ai.state = self.board
-		# 	move = ai.get_move()
-		# 	self.board.move(move)
-		# 	if self.board.valid_move:
-		# 		new_tile = Tile(None)
-		# 		new_tile.set_start_value()
-		# 		self.board.set_new_tile(new_tile)
-		# 		self.update_board()
-		# 	else:
-		# 		continue
-
-
-
-
+		self.new_game()
+		ai = Minimax()
+		while not self.board.has_lost():
+			ai.state = self.board
+			move = ai.get_move()
+			self.board.move(move)
+			if self.board.valid_move:
+				new_tile = Tile(None)
+				new_tile.set_start_value()
+				self.board.set_new_tile(new_tile)
+				self.update_board()
+			else:
+				self.update_board()
+				break
 		#self.game_ended()
 		#self.update_board()
 	def undo(self,event):

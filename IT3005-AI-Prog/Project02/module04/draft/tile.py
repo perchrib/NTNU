@@ -1,6 +1,6 @@
 import random
 class Tile():
-	def __init__(self,value):
+	def __init__(self,value=None):
 		self.value = value
 		self.pos = None
 		self.color = None
@@ -12,4 +12,4 @@ class Tile():
 		else:
 			self.value = 4
 
-		return prob
+			

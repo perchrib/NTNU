@@ -15,6 +15,8 @@ class Board:
 		self.board = [[EMPTY for x in range(dimension)] for y in range(dimension)]
 		self.valid_move = None
 		self.all_moves = []
+		self.prob = None
+		self.ai_move = None
 	"""INTERNAL FUNC called by set_new_tile"""
 	def get_ready_places(self):
 		indexes = []
@@ -36,7 +38,6 @@ class Board:
 	def move(self,move):
 		self.board = MOVE(self.board,move)
 		self.valid_move = valid_move()
-		print "VALLID: ",self.valid_move
 
 	def print_board(self):
 		print "--------------------------"

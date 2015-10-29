@@ -1,81 +1,80 @@
-from sys import maxsize
 from move_helper import move as MOVE
 from move_helper import valid_move
-from tree import Tree
+from tile import Tile
+import heuristics
 import random
 import copy
+from sample_boards import get_sample
+
 EMPTY = 0
 UP = 1
 DOWN = 2
 LEFT = 3
 RIGHT = 4
-MOVES = [UP,DOWN,LEFT,RIGHT]
+#MOVES = [UP,DOWN,LEFT,RIGHT]
+MOVES = [LEFT,UP,RIGHT,DOWN]
 class Minimax:
 	def __init__(self):
 		self.state = None
 		self.move = None
-		self.board = self.state.board
 
 
 	def minimax(self,node,depth,my_turn):
-		if depth = 0:
-				return the heuristic value of node
-		
-		elif my_turn:
-			// Return value of maximum-valued child node
+		if depth == 0:
+			return heuristics.corner(node.board) #+ heuristics.top_row(node.board)
+		if my_turn:
 			alpha = float('-inf')
 			children = self.generate_children(node)
 			for child in children:
-				child = child[0]
-				alpha = max(alpha, minimax(child, depth-1, False))
+				alpha = max(alpha, self.minimax(child, depth-1, False))
 		else:
-			// Return weighted average of all child nodes
 			alpha = 0
-			
-				α := α + (Probability[child] * expectiminimax(child, depth-1))
-		return α
+			children = self.generate_random(node)
+			for child in children:
+				alpha = alpha + (child.prob * self.minimax(child,depth-1 , True))  
+		
+		return alpha
 
 	def generate_children(self,node):
 		children = []
 		for move in MOVES:
-			temp = MOVE(node,move)
+			temp = copy.deepcopy(node)
+			temp.board = MOVE(node.board,move)
 			if valid_move():
-				children.append((node,move))
+				children.append(temp)
+				temp.ai_move = move
 		return children
 
 	def generate_random(self,node):
-		
+		available = node.get_ready_places()
+		length = len(available)
+		children = []
+		while available:
+			temp = copy.deepcopy(node)
+			pos = available.pop()
+			x = pos[0]
+			y = pos[1]
+			tile = Tile(2)
+			temp.prob = 1.0/length
+			temp.board[x][y] = tile
+			children.append(temp)
+		return children
 
-
-	
-	def get_move(self):
-		move = random.choice(MOVES)
-		return move
-
-
-	def generate_states(self):
-		depth = 0
+	def predict(self):
 		empty_spots = len(self.state.get_ready_places())
-		if empty_spots > 7:
-			depth = 1
-		else:
-			depth = 3
-
-		start_board = copy.deepcopy(self.board)
-		tree = Tree(start_board)
-		for x in range(depth):
-			children = []
-			for move in MOVES:
-				temp_board = copy.deepcopy(self.board)
-				temp_board = MOVE(temp_board,move)
-				temp_tree = Tree(temp_board)
-
-
-
-
-
-
-
-
+		depth = empty_spots > 7 and 1 or (empty_spots > 4 and 2 or 3)
 		
+		children = self.generate_children(self.state)
+		if not children: return
+		max_board = children[0]
+		max_score = self.minimax(max_board,depth,False)
+		for child in children:
+			score = self.minimax(child,depth,False)
+			if max_score < score:
+				max_score = score
+				max_board = child
+		return max_board.ai_move
 
+	def get_move(self):
+		move = self.predict()
+		return move
