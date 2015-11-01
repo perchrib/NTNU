@@ -80,7 +80,6 @@ class Draw(tk.Tk):
 		self.new_game()
 		print "PLAY"
 		self.bind("<Key>", self.key_pressed)
-		self.update_board()
 	def ai(self,event):
 		print "AI"
 		self.new_game()
@@ -97,7 +96,7 @@ class Draw(tk.Tk):
 			else:
 				self.update_board()
 				break
-		#self.game_ended()
+		self.game_ended()
 		#self.update_board()
 	def undo(self,event):
 		if len(self.board.all_moves) > 0:
@@ -106,7 +105,7 @@ class Draw(tk.Tk):
 			else:
 				self.board.board = self.board.all_moves.pop()
 			self.update_board()
-			self.board.print_board()
+			#self.board.print_board()
 			print "UNDO"
 
 	def update_tile(self,tile,delay):
@@ -136,7 +135,7 @@ class Draw(tk.Tk):
 		toplevel = tk.Toplevel()
 		label1 = tk.Label(toplevel, text="YOU LOOSE!",font=("Helvetica",size), height=0, width=50)
 		label1.pack()
-		label2 = tk.Label(toplevel, text="KUUK",font=("Helvetica",size), height=0, width=50)
+		label2 = tk.Label(toplevel, text="LOOSER!",font=("Helvetica",size), height=0, width=50)
 		label2.pack()
 		label3 = tk.Label(toplevel, text="PLAY AGAIN",font=("Helvetica",size), height=0, width=50)
 		label3.pack()
@@ -151,6 +150,7 @@ class Draw(tk.Tk):
 		tile.set_start_value()
 		self.board.set_new_tile(tile)
 		self.board.all_moves.append(self.board.board)
+		self.update_board()
 
 	def log_2(self,number):
 		if number == 1:

@@ -21,11 +21,7 @@ zero_filter = [[10,8,7,6.5],
  				[.5,.7,1,3],
  				[-.5,-1.5,-1.8,-2],
  				[-3.8,-3.7,-3.5,-3]]
-"""GOOD"""
-# zero_filter = [[16,15,14,13],
-# 				[9,10,11,12],
-# 				[8,7,6,5],
-# 				[1,2,3,4]]
+
 
 """Use the filter to accomplish the snake format"""
 def snake(board):
