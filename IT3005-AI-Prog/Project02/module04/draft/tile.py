@@ -11,5 +11,3 @@ class Tile():
 			self.value = 2
 		else:
 			self.value = 4
-
-			

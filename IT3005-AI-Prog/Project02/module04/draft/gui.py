@@ -171,5 +171,6 @@ class Draw(tk.Tk):
 				  9:'#edc850',
 				  10:'#edc53f',
 				  11:'#edc22e',
-				  12:'#3c3a32'}
+				  12:'#3c3a32',
+				  13:'#4dff4d'}
 		return colors[key]

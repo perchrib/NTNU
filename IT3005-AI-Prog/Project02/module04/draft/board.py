@@ -28,11 +28,12 @@ class Board:
 
 	def set_new_tile(self,tile):
 		options = self.get_ready_places()
-		random_item = random.choice(options)
-		x = random_item[0]
-		y = random_item[1]
-		self.board[x][y] = tile
-		tile.pos = str(x) + '-' + str(y)
+		if options:
+			random_item = random.choice(options)
+			x = random_item[0]
+			y = random_item[1]
+			self.board[x][y] = tile
+			tile.pos = str(x) + '-' + str(y)
 
 	"""Move all tiles which defines by the game rules"""
 	def move(self,move):
