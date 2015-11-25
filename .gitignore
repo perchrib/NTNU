@@ -89,3 +89,10 @@ local.properties
 **/.metadata/*
 **/.recommenders/*
 **/.DS_Store.orig
+
+#######
+DIR
+########
+
+IT3005-AI-Prog/Project03/module06/draft/ann_2048_solver/dataset/**
+IT3005-AI-Prog/Project03/module05/draft/ann_digit_solver/basics/**
